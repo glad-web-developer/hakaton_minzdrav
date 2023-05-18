@@ -1,0 +1,25 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+/venv
+/.idea
+# Project exclude paths
+back/apps/core/static/core/jqwidgets-scripts/scripts/initdashboard.js
+back/apps/core/static/core/jqwidgets-scripts/scripts/localization.js
+back/apps/import_scripts/csv/beramenie.csv
+back/apps/import_scripts/csv/user.csv
+back/apps/import_scripts/csv/vrachi.csv
+back/apps/import_scripts/csv/consultazii.csv
+back/apps/import_scripts/csv/ishod.csv
+back/apps/import_scripts/csv/anketi.csv
+back/cod_staroi_is
+back/db_prod.sqlite3
+back/files
+back/*.sqlite3
+back/apps/import_scripts/csv/tablizi_iz_staroi_is/*.csv
+dont_git
