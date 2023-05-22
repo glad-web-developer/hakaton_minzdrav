@@ -1,0 +1,6 @@
+export {default as HomePage} from './home/HomePage'
+export {default as LoginPage} from './login/LoginPage'
+export {default as NotFoundPage} from './not-found/not-found-page'
+export {default as MainLayout} from './main-layout/main-layout'
+export {default as DashboardConstructorPage} from './dashboard-constructor/DashboardConstructorPage'
+export {default as DashboardPage} from './dashboard/DashboardPage'
