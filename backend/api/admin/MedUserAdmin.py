@@ -6,6 +6,7 @@ from api.models import MedUser
 
 @admin.register(MedUser)
 class MedUserAdmin(ImportExportModelAdmin):
+    icon_name = 'people'
     list_display = [
         'id',
         'user',

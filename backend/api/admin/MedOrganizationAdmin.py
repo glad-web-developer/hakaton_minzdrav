@@ -6,6 +6,7 @@ from api.models import MedOrganization
 
 @admin.register(MedOrganization)
 class MedOrganizationAdmin(ImportExportModelAdmin):
+    icon_name = 'local_hospital'
     list_display = [
         'id',
         'name',
