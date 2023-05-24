@@ -12,7 +12,7 @@ class MedOrganization(models.Model):
     name = models.CharField('Название', max_length=255, unique=True)
     source = models.IntegerField('Источник данных', choices=SOURCE_ENUM.choices)
     # id может быть UUID строка и int
-    source_id = models.CharField('id во внешней системе')
+    source_id = models.CharField('id во внешней системе', max_length=255)
 
 
     def __str__(self):

@@ -11,7 +11,7 @@ class MedDataSet(models.Model):
         db_table = 'med_data_set'
 
     user = models.ForeignKey(User, verbose_name='Пользователь кто импортировал', on_delete=models.PROTECT,)
-    name = models.CharField('Название набора', null=True, blank=True)
+    name = models.CharField('Название набора', null=True, blank=True, max_length=255)
     date_create = models.DateTimeField('Дата импорта', auto_now_add=True)
     source = models.IntegerField('Источник данных', choices=SOURCE_ENUM.choices)
     import_status = models.IntegerField('Статус импорта', choices=IMPORT_DATA_SET_STATUS_ENUM.choices)

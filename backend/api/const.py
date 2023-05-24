@@ -23,3 +23,7 @@ class IMPORT_DATA_SET_DETAIL_STATUS_ENUM(models.IntegerChoices):
     SUCCESS = 1, 'Успешный импорт'
     WARNING = 2, 'Предупреждение'
     ERROR = 3, 'Ошибка'
+
+class SEX_ENUM(models.IntegerChoices):
+    MALE = 1, 'Мужской'
+    FEMALE = 2, 'Женский'
