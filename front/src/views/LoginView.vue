@@ -10,22 +10,36 @@
           <form method="post" class="card-body forma-vhoda text-center" action="#">
 
 
-            <div class="mb-3">
-              <v-text-field name="login" label="Логин" @keydown.enter="login"
-                            v-model="userForm.login"></v-text-field>
-            </div>
-
-            <div class="mb-3">
-              <v-text-field name="pas" type="password" label="Пароль" @keydown.enter="login"
-                            v-model="userForm.pas"></v-text-field>
-            </div>
+            <v-btn
+                color="light-blue darken-4"
+                dark
+                class="px-5 mb-5 d-block w-100"
+                @click="loginChiefDoctor"
+            >Войти как глав. врач
+            </v-btn>
 
             <v-btn
-                color="blue lighten-1"
+                color="light-blue darken-4"
                 dark
-                class="px-5"
-                @click="login"
-            >Войти
+                class="px-5 mb-5 d-block w-100"
+                @click="loginDoctor"
+            >Войти как врач
+            </v-btn>
+
+            <v-btn
+                color="light-blue darken-4"
+                dark
+                class="px-5 mb-5 d-block w-100"
+                @click="loginPatient"
+            >Войти как пациент
+            </v-btn>
+
+            <v-btn
+                color="light-blue darken-4"
+                dark
+                class="px-5  d-block w-100"
+                @click="loginInsurance"
+            >Войти как соц. страх
             </v-btn>
 
           </form>
@@ -47,29 +61,39 @@ import CookieHelper from "@/plugins/cookieHelper";
 export default {
   name: "LoginView",
   components: {},
-  data() {
-    return {
-      userForm: {
-        login: "",
-        pas: ""
-      },
-    }
-  },
 
   methods: {
-    async login() {
+    //для удобства демонстрации и проверки, все логины и пароли зашиты в коде. Авторизация на беке работает. В продакшене будует форма авторизации
+    async loginChiefDoctor() {
+      this.login('ivanov', 'Serenity321')
+    },
 
-      //костыль
-      CookieHelper.setCookie('sessionid', "111", {'max-age': 31536000});
-      CookieHelper.setCookie('csrftoken', "111", {'max-age': 31536000});
-      window.location.href = "/";
+     async loginDoctor() {
+       await this.login('petrov', 'Serenity321')
+    },
+
+     async loginPatient() {
+      await this.login('924375053', 'Serenity321')
+    },
+
+      async loginInsurance() {
+      await this.login('sidorov_soz', 'Serenity321')
+    },
+
+
+    async login(login, pas) {
+
+      const userForm = {
+        login: login,
+        pas: pas,
+      }
 
 
       try {
         const url = LOCAL_CONFIG.urls.login;
         const response = await fetch(url, {
           method: 'POST',
-          body: JSON.stringify(this.userForm),
+          body: JSON.stringify(userForm),
           headers: {
             'Content-Type': 'application/json',
             'X-CSRFToken': CookieHelper.getCookie('csrftoken')
@@ -80,8 +104,13 @@ export default {
           CookieHelper.setCookie('sessionid', responseJson.sessionid, {'max-age': 31536000});
           CookieHelper.setCookie('csrftoken', responseJson.csrf, {'max-age': 31536000});
           window.location.href = "/";
-        } else {
-          this.$emit('showAlert', 'Ошибка авторизации');
+        }
+         else if (response.status === 400){
+            this.$emit('showAlert', await response.text());
+        }
+
+        else {
+          this.$emit('showAlert', 'Непредвиденная ошибка авторизации');
         }
       } catch (e) {
         this.$emit('showAlert', "Ошибка при обращение к серверу");

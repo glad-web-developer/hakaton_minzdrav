@@ -50,11 +50,11 @@ export default {
 
   data() {
     return {
-      isLogin: true,
-      isLoad: true,
+      isLogin: false,
+      isLoad: false,
       user: {
         isAdmin: false,
-        userName: 'Admin'
+        userName: ''
       },
 
       counter: 0,
