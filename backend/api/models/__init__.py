@@ -6,3 +6,4 @@ from .MedUser import MedUser
 from .MedDataSet import MedDataSet
 from .MedDataSetDetail import MedDataSetDetail
 from .AssignmentInDataSet import AssignmentInDataSet
+from .AllAssignment import AllAssignment
