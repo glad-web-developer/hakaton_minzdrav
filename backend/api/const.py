@@ -27,3 +27,7 @@ class IMPORT_DATA_SET_DETAIL_STATUS_ENUM(models.IntegerChoices):
 class SEX_ENUM(models.IntegerChoices):
     MALE = 1, 'Мужской'
     FEMALE = 2, 'Женский'
+
+class ASSIGNMENT_STATUS_ENUM(models.IntegerChoices):
+    ACCEPTABLE = 1, 'Допустимое назначение'
+    INVALID_ACCEPTABLE = 2, 'Недопустимое назначение'

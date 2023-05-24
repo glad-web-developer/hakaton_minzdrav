@@ -10,6 +10,7 @@ class Mkb10(models.Model):
         db_table = 'mkb10'
 
     name = models.CharField('Название', max_length=255, unique=True)
+    code = models.CharField('Код', max_length=255, unique=True)
 
     def __str__(self):
-        return self.name
+        return f'{self.code} {self.name}'
