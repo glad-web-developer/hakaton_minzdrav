@@ -1,6 +1,7 @@
 from django.db import models
 
 from api.const import SOURCE_ENUM
+from api.models import Doctor
 
 
 class DoctorVariant(models.Model):
@@ -18,4 +19,4 @@ class DoctorVariant(models.Model):
     source_specialization = models.CharField('Специализация во внешней системе', max_length=255)
 
     def __str__(self):
-        return self.fio
+        return self.source_fio
