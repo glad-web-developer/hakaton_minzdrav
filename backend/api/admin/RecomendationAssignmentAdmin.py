@@ -6,7 +6,7 @@ from api.models import RecomendationAssignment
 
 @admin.register(RecomendationAssignment)
 class RecomendationAssignmentAdmin(ImportExportModelAdmin):
-    icon_name = 'assignment'
+    icon_name = 'healing'
     list_display = [
         'id',
         'assignment',
