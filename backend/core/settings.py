@@ -159,8 +159,8 @@ MATERIAL_ADMIN_SITE = {
     'PROFILE_BG': 'back3.jpg',  # Admin site profile background (path to static should be specified)
     'LOGIN_LOGO': '',  # Admin site logo on login page (path to static should be specified)
     'LOGOUT_BG': 'back3.jpg',  # Admin site background on login/logout pages (path to static should be specified)
-    'SHOW_THEMES': True,  # Show default admin themes button
-    'TRAY_REVERSE': True,  # Hide object-tools and additional-submit-line by default
+    'SHOW_THEMES': False,  # Show default admin themes button
+    'TRAY_REVERSE': False,  # Hide object-tools and additional-submit-line by default
     'NAVBAR_REVERSE': True,  # Hide side navbar by default
     'SHOW_COUNTS': True,  # Show instances counts for each model
     'APP_ICONS': {
