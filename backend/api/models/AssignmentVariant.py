@@ -1,6 +1,5 @@
 from django.db import models
 
-from api.const import SOURCE_ENUM
 from api.models import Assignment
 
 

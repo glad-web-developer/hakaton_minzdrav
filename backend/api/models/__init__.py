@@ -13,3 +13,5 @@ from .MedDataSetDetail import MedDataSetDetail
 from .AssignmentInDataSet import AssignmentInDataSet
 from .AllAssignment import AllAssignment
 
+from .RecomendationAssignment import RecomendationAssignment
+
