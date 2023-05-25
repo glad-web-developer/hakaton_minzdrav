@@ -1,26 +1,28 @@
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 
-from api.models import MedOrganization
+from api.models import Mkb10
 
 
-@admin.register(MedOrganization)
-class MedOrganizationAdmin(ImportExportModelAdmin):
-    icon_name = 'local_hospital'
+@admin.register(Mkb10)
+class Mkb10Admin(ImportExportModelAdmin):
+    icon_name = 'book'
     list_display = [
         'id',
         'name',
+        'code',
     ]
 
     search_fields = [
         'id',
         'name',
+        'code',
     ]
     list_display_links = [
         'id',
         'name',
+        'code',
     ]
-
 
     save_as = True
     save_on_top = True
