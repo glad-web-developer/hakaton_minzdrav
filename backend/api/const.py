@@ -1,5 +1,7 @@
 from django.db import models
 
+from core.settings import MEDIA_URL, STATIC_URL
+
 
 class ROLE_ENUM(models.IntegerChoices):
     ADMIN = 1, 'Админ'
@@ -31,3 +33,13 @@ class SEX_ENUM(models.IntegerChoices):
 class ASSIGNMENT_STATUS_ENUM(models.IntegerChoices):
     ACCEPTABLE = 1, 'Допустимое назначение'
     INVALID_ACCEPTABLE = 2, 'Недопустимое назначение'
+
+
+class IMPORT_EXCEL_TEMPLATE_ENUM(models.TextChoices):
+    MIS_MOSCOW = 'mis_moscow', 'МИС Москвы'
+
+    @staticmethod
+    def get_path(template_name):
+        # условимся что для МИС Москвы такой формат данных
+        if template_name == IMPORT_EXCEL_TEMPLATE_ENUM.MIS_MOSCOW:
+            return STATIC_URL + 'dataset_to_import.xlsx'
