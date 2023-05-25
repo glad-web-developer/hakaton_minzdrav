@@ -10,5 +10,5 @@ class AssignmentVariant(models.Model):
         verbose_name_plural = 'Назначение - вариации названия'
         db_table = 'assignment_variant'
 
-    assignment = models.ForeignKey(Assignment, max_length=255, on_delete=models.CASCADE)
+    assignment = models.ForeignKey(Assignment, max_length=255, on_delete=models.CASCADE, verbose_name='Назначение(родительская запись в БД)')
     name = models.CharField('Название', max_length=255,)

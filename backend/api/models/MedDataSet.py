@@ -14,6 +14,7 @@ class MedDataSet(models.Model):
     name = models.CharField('Название набора', null=True, blank=True, max_length=255)
     date_create = models.DateTimeField('Дата импорта', auto_now_add=True)
     is_excel = models.BooleanField('Импорт был через Эксель', default=False)
+    is_archive = models.BooleanField('Набор отправлен в архив', default=False, help_text='не будет учитываться в наборе')
     source = models.IntegerField('Источник данных', choices=SOURCE_ENUM.choices)
     import_status = models.IntegerField('Статус импорта', choices=IMPORT_DATA_SET_STATUS_ENUM.choices)
 
