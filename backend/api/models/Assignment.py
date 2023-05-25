@@ -1,8 +1,5 @@
 from django.db import models
 
-from api.const import SOURCE_ENUM
-
-
 class Assignment(models.Model):
     class Meta:
         verbose_name = 'Назначение'
