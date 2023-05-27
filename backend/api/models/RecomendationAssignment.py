@@ -10,4 +10,5 @@ class RecomendationAssignment(models.Model):
         db_table = 'recomendation_assignment'
 
     assignment = models.ForeignKey(Assignment,verbose_name='Назначение', on_delete=models.CASCADE)
+    # +
     mkb10 = models.ForeignKey(Mkb10, verbose_name='МКБ10', on_delete=models.CASCADE)

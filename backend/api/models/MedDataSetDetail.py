@@ -10,6 +10,7 @@ class MedDataSetDetail(models.Model):
         verbose_name_plural = 'Наборы мед. назначений - детализация'
         db_table = 'med_data_set_detail'
 
+    # +
     med_data_set = models.ForeignKey(MedDataSet, verbose_name='Набор данных', on_delete=models.CASCADE,)
     row_num = models.IntegerField('Номер строки')
     import_status = models.IntegerField('Статус импорта', choices=IMPORT_DATA_SET_DETAIL_STATUS_ENUM.choices)
