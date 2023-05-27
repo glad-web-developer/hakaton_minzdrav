@@ -14,7 +14,7 @@ class AllAssignment(models.Model):
     #  is_archive добавить + продумать как перерасчет делать если были записи до него. Как вариант выборка по id source + last наборы. Или цикл по тем что в архив и поиск по последнему набору
     #    тут вероятно не назначения надо а диагнозы и правильности назначений !!!ВАЖНО
 
-    med_data_set = models.ForeignKey(MedDataSetDetail, verbose_name='Набор данных - детализация',
+    med_data_set_detail = models.ForeignKey(MedDataSetDetail, verbose_name='Набор данных - детализация',
                                      on_delete=models.CASCADE, )
     source_assignment = models.CharField('Назначение во внешней системе', max_length=255)
     assignment = models.ForeignKey(Assignment, null=True, blank=True, on_delete=models.SET_NULL,
