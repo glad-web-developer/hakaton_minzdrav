@@ -9,7 +9,7 @@ class AllAssignmentAdmin(ImportExportModelAdmin):
     icon_name = 'assignment'
     list_display = [
         'id',
-        'med_data_set',
+        'med_data_set_detail',
         'source_assignment',
         'assignment',
         'assignment_status',
@@ -17,20 +17,20 @@ class AllAssignmentAdmin(ImportExportModelAdmin):
 
     search_fields = [
         'id',
-        'med_data_set',
+        'med_data_set_detail',
         'source_assignment',
         'assignment',
         'assignment_status',
     ]
     list_display_links = [
         'id',
-        'med_data_set',
+        'med_data_set_detail',
         'source_assignment',
         'assignment',
         'assignment_status',
     ]
     list_filter = [
-        'med_data_set',
+        'med_data_set_detail',
         'source_assignment',
         'assignment',
         'assignment_status',
