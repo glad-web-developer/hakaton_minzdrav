@@ -1,0 +1,165 @@
+from api.const import IMPORT_EXCEL_TEMPLATE_ENUM
+from api.service import ImportService
+import pandas as pd
+
+
+class ImportExcelService(ImportService):
+    HEADER_MIS_MOSCOW = [
+        {
+            'label': 'ID приема*',
+            'name': 'patient_id',
+            'required': True
+        },
+        {
+            'label': 'ФИО пациента',
+            'name': 'patient_fio',
+            'required':False
+        },
+        {
+            'label': 'Пол пациента',
+            'name': 'patient_sex',
+            'required': False
+        },
+        {
+            'label': 'Дата рождения пациента',
+            'name': 'patient_date_birth',
+            'required': False
+        },
+        {
+            'label': 'Номер полиса пациента',
+            'name': 'patient_polis',
+            'required': False
+        },
+        {
+            'label': 'СНИЛС пациента',
+            'name': 'patient_snils',
+            'required': False
+        },
+        {
+            'label': 'Телефон пациента',
+            'name': 'patient_phone',
+            'required': False
+        },
+        {
+            'label': 'Номер паспорта пациента',
+            'name': 'patient_passport',
+            'required': False
+        },
+        {
+            'label': 'ID приема*',
+            'name': 'med_data_set_detail_id',
+            'required': True
+        },
+        {
+            'label': 'Дата оказания услуги*',
+            'name': 'date_service',
+            'required': True
+        },
+        {
+            'label': 'ID врача*',
+            'name': 'doctor_source_id',
+            'required': True
+        },
+        {
+            'label': 'ФИО врача',
+            'name': 'doctor_source_fio',
+            'required': False
+        },
+        {
+            'label': 'Должность',
+            'name': 'doctor_source_specialization',
+            'required': False
+        },
+        {
+            'label': 'Код МКБ-10*',
+            'name': 'mkb10__code',
+            'required': True
+        },
+        {
+            'label': 'Назначения*',
+            'name': 'assignment_string',
+            'required': True
+        },
+    ]
+
+    def get_header(self, excel_template: IMPORT_EXCEL_TEMPLATE_ENUM):
+        """
+        вернёт список названий полей который ожидаються в Excel файле
+        """
+        if excel_template == IMPORT_EXCEL_TEMPLATE_ENUM.MIS_MOSCOW:
+            return self.HEADER_MIS_MOSCOW
+
+    def get_required_header(self, excel_template: IMPORT_EXCEL_TEMPLATE_ENUM):
+        header = self.get_header(excel_template)
+        item_header_list = list(filter(lambda x: (x['required']), header))
+        return list(map(lambda x:x['label'], item_header_list))
+
+    def import_excel(self, excel_file,
+                     excel_template: IMPORT_EXCEL_TEMPLATE_ENUM = IMPORT_EXCEL_TEMPLATE_ENUM.MIS_MOSCOW):
+        """
+        запуск импорта excel файла
+        """
+        excel_ds = self.check_file_and_get_ds(excel_file=excel_file, excel_template=excel_template)
+        data_error_list = self.check_data(excel_ds=excel_ds, excel_template=excel_template)
+
+        if data_error_list:
+            raise Exception(f'Не заполенные обязательные поля: {data_error_list}')
+
+    def check_data(self, excel_ds, excel_template: IMPORT_EXCEL_TEMPLATE_ENUM):
+        """
+        Проверяет данные на соотвествие
+        """
+        required_filds_list = self.get_required_header(excel_template)
+        check_data_error_list = []
+        for index_row, row in enumerate(excel_ds, start=1):
+            error_column_list = []
+
+            for column_label, row_val in row.items():
+                if column_label in required_filds_list:
+                    if pd.isnull(row_val) or not row_val:
+                        error_column_list.append(column_label)
+
+            if error_column_list:
+                check_data_error_list.append({
+                    'row':index_row,
+                    'error': f'Нет значения в поле/полях: {",".join(error_column_list)}'
+                })
+        return check_data_error_list
+
+
+
+    def check_file_and_get_ds(self, excel_file, excel_template: IMPORT_EXCEL_TEMPLATE_ENUM):
+        """
+        Проверка, что файл - эксель и его структура соответствует шаблону + вытащить данные в DataSet
+        """
+
+        if excel_file.content_type != 'application/vnd.ms-excel' and excel_file.content_type != 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+            raise Exception(f'Файл не является Excel таблицей')
+
+        excel_ds = pd.read_excel(excel_file,  sheet_name=0)
+
+        # получаем шапку excel и проверяем её с настойками полей импорта
+        excel_ds_header = list(excel_ds.columns)
+
+        excel_template_header = self.get_header(excel_template=excel_template)
+        print(excel_template_header)
+
+        # проверка на достаточность полей
+        columns_dont_exist = []
+        for column_header in excel_template_header:
+            if not (column_header['label'] in excel_ds_header) and column_header['required']:
+                columns_dont_exist.append(column_header['label'])
+
+        if columns_dont_exist:
+            raise Exception(f'В Excel файле нехватает полей: {columns_dont_exist}')
+
+        return excel_ds.to_dict('records')
+
+
+    def revert_import(self):
+        """
+        отмена импорта
+        """
+
+    def save_log(self):
+        pass

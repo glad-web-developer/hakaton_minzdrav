@@ -3,7 +3,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 
-from api.api import Login, Logout, CheckUser, UrlImportTemplate
+from api.api import Login, Logout, CheckUser, UrlImportTemplate, ImportExcel
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -11,8 +11,11 @@ urlpatterns = [
     path('api/login/', Login.as_view(), ),
     path('api/logout/', Logout.as_view()),
     path('api/check_user/', CheckUser.as_view()),
+
     path('api/url_import_template/<template_name>/', UrlImportTemplate.as_view()),
     path('api/url_import_template/', UrlImportTemplate.as_view()),
+
+    path('api/import_excel/', ImportExcel.as_view()),
 
     # path('', TemplateView.as_view(template_name="index.html"))
 ]
