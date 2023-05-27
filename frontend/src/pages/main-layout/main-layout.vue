@@ -1,7 +1,9 @@
 <template>
-  <div class="d-flex flex-column h-100">
-    <app-navigation-widget class="flex-grow-0"/>
-    <router-view class="flex-grow-1"/>
+  <div class="h-100">
+    <app-navigation-widget/>
+    <v-main class="h-100">
+      <router-view class="h-100"/>
+    </v-main>
     <v-overlay
         class="overlay"
         :value="overlay"
@@ -19,14 +21,15 @@ import {AppNavigationWidget, navigationBus} from "@/widgets";
 import {CreateProtocolForm, OpenProtocolForm} from "@/features/protocol"
 import {CreateRecipe107, CreateRecipe148} from "@/features/recipe";
 import {SelectDashboardForm} from "@/features/dashboard";
+import {CreateReportTemplate} from '@/features/report'
 
 export default {
   name: 'MainLayout',
-  components: {OpenProtocolForm, AppNavigationWidget, CreateRecipe107, CreateRecipe148},
+  components: {OpenProtocolForm, AppNavigationWidget, CreateRecipe107, CreateRecipe148, CreateReportTemplate},
   data() {
     return {
       overlay: false,
-      overlayComponent: undefined
+      overlayComponent: null
     };
   },
   methods: {
@@ -52,6 +55,10 @@ export default {
     onClickShowSelectDashboard() {
       this.overlayComponent = SelectDashboardForm
       this.overlay = true
+    },
+    onClickCreateReportTemplate() {
+      this.overlayComponent = CreateReportTemplate
+      this.overlay = true
     }
   },
   mounted() {
@@ -60,10 +67,11 @@ export default {
     navigationBus.$on('click-create-recipe-107', this.onClickCreateRecipe107)
     navigationBus.$on('click-create-recipe-148', this.onClickCreateRecipe148)
     navigationBus.$on('click-show-select-dashboard', this.onClickShowSelectDashboard)
+    navigationBus.$on('click-create-report-template', this.onClickCreateReportTemplate)
   }
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 
 </style>

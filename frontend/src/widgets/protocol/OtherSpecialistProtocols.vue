@@ -4,7 +4,6 @@
       @click-close-button="$emit('close')"
   >
     <v-data-table
-        fixed-header
         item-key="innerNumber"
         sort-by="innerNumber"
         hide-default-footer
@@ -34,11 +33,28 @@ export default {
           text: 'Номер карты',
           align: 'start',
           value: 'innerNumber',
+          class: 'other-specialist-protocols-widget-header-cell'
         },
-        {text: 'Дата явки', value: 'dateOfAppearance'},
-        {text: 'Диагноз', value: 'diagnosis'},
-        {text: 'Врач', value: 'doctor'},
-        {text: 'Код', value: 'code'},
+        {
+          text: 'Дата явки',
+          value: 'dateOfAppearance',
+          class: 'other-specialist-protocols-widget-header-cell',
+        },
+        {
+          text: 'Диагноз',
+          value: 'diagnosis',
+          class: 'other-specialist-protocols-widget-header-cell'
+        },
+        {
+          text: 'Врач',
+          value: 'doctor',
+          class: 'other-specialist-protocols-widget-header-cell',
+        },
+        {
+          text: 'Код',
+          value: 'code',
+          class : 'other-specialist-protocols-widget-header-cell'
+        },
       ],
       protocols: []
     }
@@ -76,6 +92,9 @@ export default {
 </script>
 
 <style lang="scss">
+.other-specialist-protocols-widget-header-cell {
+  padding: 0;
+}
 
 .other-specialist-protocols-widget-row {
   cursor: pointer;

@@ -1,12 +1,7 @@
 <template>
-  <div id="app">
-    <v-app class="w-100">
-      <v-main>
-        <router-view/>
-      </v-main>
-    </v-app>
-
-  </div>
+  <v-app id="app">
+    <router-view class="background"/>
+  </v-app>
 </template>
 
 <script>
@@ -18,3 +13,13 @@ export default {
   }
 }
 </script>
+
+<style>
+:root {
+  --gradient-1: linear-gradient(0deg, #FFDEE9 0%, #B5FFFC 100%)
+}
+
+.background {
+  background-image: var(--gradient-1);
+}
+</style>

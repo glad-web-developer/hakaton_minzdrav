@@ -9,6 +9,7 @@ const dashboards = [
                 id: 1,
                 component: 'MorbidityCChartWidget',
                 title: 'График гепатит C',
+                cols: 10,
                 x: 150,
                 y: 150,
             },
@@ -16,6 +17,7 @@ const dashboards = [
                 id: 2,
                 component: 'MorbidityBChartWidget',
                 title: 'График гепатит B',
+                cols: 10,
                 x: 0,
                 y: 300,
             }
@@ -29,6 +31,7 @@ const dashboards = [
                 id: 1,
                 component: 'MorbidityCChartWidget',
                 title: 'График гепатит C',
+                cols: 10,
                 x: 0,
                 y: 0,
             },
@@ -36,6 +39,7 @@ const dashboards = [
                 id: 2,
                 component: 'MorbidityBChartWidget',
                 title: 'График гепатит B',
+                cols: 10,
                 x: 400,
                 y: 400,
             }
@@ -67,6 +71,11 @@ export default class DashboardApi extends Api {
                 res(dashboards.find(dashboard => dashboard.id === id))
             }, 1500)
         })
+    }
+
+    // eslint-disable-next-line no-unused-vars
+    static async saveDashboard(data) {
+        return undefined
     }
 
 }

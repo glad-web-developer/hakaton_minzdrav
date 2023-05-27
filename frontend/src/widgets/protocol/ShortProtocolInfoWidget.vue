@@ -1,4 +1,5 @@
 <template>
+  
   <contollable-card
       title="Информация о протоколе"
       @click-close-button="$emit('close')"

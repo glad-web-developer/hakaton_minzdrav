@@ -1,45 +1,26 @@
 <template>
-  <vue-draggable-resizable
-      class="border-0"
-      :w="500"
-      :h="200"
-      :grid="[50,50]"
-      :parent="true"
-      :resizable="false"
-      @dragging="onDragging"
+  <v-sheet
+      color="cyan"
+      elevation="12"
+      rounded
   >
-    <contollable-card
-        class="root"
-        title="График гепатит С"
-        @click-close-button="$emit('close')"
-    >
-      <v-sheet
-          class="v-sheet--offset mx-auto"
-          color="cyan"
-          elevation="12"
-          max-width="calc(100% - 32px)"
-          rounded
-      >
-        <v-sparkline
-            class="px-2"
-            :labels="labels"
-            :value="value"
-            color="white"
-            line-width="1"
-            label-size="2"
-            auto-draw
-        ></v-sparkline>
-      </v-sheet>
-    </contollable-card>
-  </vue-draggable-resizable>
+    <v-sparkline
+        class="px-2"
+        :labels="labels"
+        :value="value"
+        color="white"
+        line-width="1"
+        label-size="2"
+        auto-draw
+    ></v-sparkline>
+  </v-sheet>
+
 </template>
 
 <script>
-import {ContollableCard} from '@/share/ui'
 
 export default {
   name: "MorbidityCChartWidget",
-  components: {ContollableCard},
   data() {
     return {
       labels: [
@@ -64,17 +45,9 @@ export default {
       ],
     }
   },
-  methods: {
-    onDragging(x, y) {
-      this.$emit('dragging', x, y)
-    }
-  }
 }
 </script>
 
 <style scoped>
-.root {
-  height: 100%;
-  cursor: pointer;
-}
+
 </style>

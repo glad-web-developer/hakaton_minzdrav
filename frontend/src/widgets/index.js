@@ -7,3 +7,4 @@ export {default as OtherSpecialistProtocols} from './protocol/OtherSpecialistPro
 
 export {default as MorbidityCChartWidget} from './dashboard/MorbidityChartCWidget'
 export {default as MorbidityBChartWidget} from './dashboard/MorbidityChartBWidget'
+export {default as TestChar} from './dashboard/TestChart'

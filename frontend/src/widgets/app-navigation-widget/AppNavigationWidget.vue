@@ -1,11 +1,8 @@
 <template>
-  <v-app-bar
-      dense
-  >
-    <div class="d-flex gap-2">
-      <router-link v-if="$route.name !== 'home'" :to="{name: 'home'}" class="text-decoration-none">
-        <v-btn>Перейти к протоколу</v-btn>
-      </router-link>
+  <v-app-bar dense class="bg" app>
+    <v-btn-toggle background-color="transparent" tile group>
+      <v-btn v-if="$route.name !== 'home'" @click="$router.push({name: 'home'})" link text class="text-white">Протокол
+      </v-btn>
 
       <v-menu
           v-else
@@ -13,6 +10,9 @@
       >
         <template v-slot:activator="{ attrs, on }">
           <v-btn
+              class="text-white"
+              link
+              text
               v-bind="attrs"
               v-on="on"
           >
@@ -59,9 +59,11 @@
 
         <template v-slot:activator="{ attrs, on }">
           <v-btn
+              class="text-white"
+              text
+              link
               v-bind="attrs"
               v-on="on"
-              @click.prevent="isShowFileMenu = true"
           >
             Файл
           </v-btn>
@@ -108,6 +110,9 @@
       <v-menu offset-y>
         <template v-slot:activator="{ attrs, on }">
           <v-btn
+              class="text-white"
+              text
+              link
               v-bind="attrs"
               v-on="on"
           >
@@ -136,6 +141,9 @@
       <v-menu offset-y>
         <template v-slot:activator="{ attrs, on }">
           <v-btn
+              class="text-white"
+              text
+              link
               v-bind="attrs"
               v-on="on"
           >
@@ -163,8 +171,38 @@
         </v-list>
       </v-menu>
 
-    </div>
+      <v-menu offset-y>
+        <template v-slot:activator="{ attrs, on }">
+          <v-btn
+              class="text-white"
+              text
+              link
+              v-bind="attrs"
+              v-on="on"
+          >
+            Отчетность
+          </v-btn>
+        </template>
 
+        <v-list>
+
+          <v-list-item @click="onClickCreateReportTemplate">
+            <v-list-item-icon>
+              <v-icon>mdi-home</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Создать шаблон отчета</v-list-item-title>
+          </v-list-item>
+
+          <v-list-item @click="onClickCreateReport">
+            <v-list-item-icon>
+              <v-icon>mdi-home</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Сформировать отчет по шаблону</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+
+    </v-btn-toggle>
   </v-app-bar>
 </template>
 
@@ -177,7 +215,8 @@ export default {
   name: "AppNavigationWidget",
   data() {
     return {
-      isShowFileMenu: false
+      isShowFileMenu: false,
+      value: 1,
     }
   },
   methods: {
@@ -209,11 +248,21 @@ export default {
     },
     onClickShowSelectDashboard() {
       navigationBus.$emit('click-show-select-dashboard')
+    },
+    onClickCreateReportTemplate() {
+      navigationBus.$emit('click-create-report-template')
+    },
+    onClickCreateReport() {
+      navigationBus.$emit('click-create-report')
     }
   }
 }
 </script>
 
 <style scoped>
+.bg {
+  background-color: #8BC6EC;
+  background-image: linear-gradient(135deg, #8BC6EC 0%, #9599E2 100%);
 
+}
 </style>

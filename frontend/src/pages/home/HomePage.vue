@@ -1,5 +1,5 @@
 <template>
-  <v-container class="grey lighten-4 mw-100 d-flex flex-column">
+  <v-container class="mw-100 d-flex flex-column">
     <v-row class="flex-grow-0">
       <v-col v-if="isShowShortInfoProtocol" cols="3">
         <short-protocol-info-widget @close="isShowShortInfoProtocol = false"/>
@@ -68,6 +68,6 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 
 </style>
