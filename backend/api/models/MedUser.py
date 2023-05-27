@@ -13,10 +13,10 @@ class MedUser(models.Model):
 
     user = models.OneToOneField(User, verbose_name='Пользователь', on_delete=models.PROTECT, related_name='polzovatel', unique=True)
     med_organiizaciya = models.ForeignKey(MedOrganization, verbose_name='Медицинская организация',
-                                          on_delete=models.PROTECT)
+                                          on_delete=models.PROTECT, null=True, blank=True)
     fio = models.CharField(verbose_name='ФИО', max_length=255)
     role = models.IntegerField(verbose_name='Роль', choices=ROLE_ENUM.choices)
 
     def __str__(self):
-        return f'{self.fio} ({self.med_organiizaciya.name})'
+        return f'{self.fio} ({self.med_organiizaciya.name if self.med_organiizaciya else ""})'
 
