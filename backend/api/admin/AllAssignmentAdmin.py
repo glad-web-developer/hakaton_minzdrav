@@ -12,28 +12,23 @@ class AllAssignmentAdmin(ImportExportModelAdmin):
         'med_data_set_detail',
         'source_assignment',
         'assignment',
-        'assignment_status',
     ]
 
     search_fields = [
         'id',
-        'med_data_set_detail',
         'source_assignment',
-        'assignment',
-        'assignment_status',
+        'assignment__name',
     ]
     list_display_links = [
         'id',
         'med_data_set_detail',
         'source_assignment',
         'assignment',
-        'assignment_status',
     ]
     list_filter = [
         'med_data_set_detail',
         'source_assignment',
         'assignment',
-        'assignment_status',
     ]
     save_as = True
     save_on_top = True

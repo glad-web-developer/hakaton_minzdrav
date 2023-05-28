@@ -17,9 +17,8 @@ class MedUserAdmin(ImportExportModelAdmin):
 
     search_fields = [
         'id',
-        'user.useranme',
-        'user',
-        'med_organiizaciya.name',
+        'user__username',
+        'fio',
     ]
     list_display_links = [
         'id',
@@ -29,7 +28,9 @@ class MedUserAdmin(ImportExportModelAdmin):
         'role',
     ]
 
-    list_filter = ['role',]
+    list_filter = ['role',
+                   'med_organiizaciya',
+                   ]
 
     save_as = True
     save_on_top = True

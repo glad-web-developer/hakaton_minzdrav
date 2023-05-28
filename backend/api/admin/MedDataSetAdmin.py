@@ -23,14 +23,6 @@ class MedDataSetAdmin(ImportExportModelAdmin):
 
     search_fields = [
         'id',
-        'name',
-        'date_create',
-        'source',
-        'import_status',
-        'count_correct',
-        'count_dont_complete',
-        'count_excess',
-        'count_dont_correct',
     ]
     list_display_links = [
         'id',
