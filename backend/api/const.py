@@ -16,9 +16,9 @@ class SOURCE_ENUM(models.IntegerChoices):
 class IMPORT_DATA_SET_STATUS_ENUM(models.IntegerChoices):
     SUCCESS = 1, 'Успешный импорт'
     WARNING = 2, 'Не все записи импортированы'
-    ERROR_FILE = 3, 'Ошибка чтения файла'
+    ERROR_FILE = 3, 'Ошибка чтения файла или файл не является Excel'
     ERROR_STRUCTURE = 4, 'Ошибка структуры файла или запроса'
-    ERROR_ACCESS = 5, 'Ошибка прав доступа'
+    ERROR_REQUIRED = 5, 'Ошибка заполнения обязательных полей'
 
 
 class IMPORT_DATA_SET_DETAIL_STATUS_ENUM(models.IntegerChoices):

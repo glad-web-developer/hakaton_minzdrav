@@ -1,4 +1,7 @@
-from api.const import IMPORT_EXCEL_TEMPLATE_ENUM
+from django.contrib.auth.models import User
+
+from api.const import IMPORT_EXCEL_TEMPLATE_ENUM, SOURCE_ENUM, IMPORT_DATA_SET_STATUS_ENUM
+from api.models import MedDataSet
 from api.service import ImportService
 import pandas as pd
 
@@ -6,7 +9,7 @@ import pandas as pd
 class ImportExcelService(ImportService):
     HEADER_MIS_MOSCOW = [
         {
-            'label': 'ID приема*',
+            'label': 'ID пациента*',
             'name': 'patient_id',
             'required': True
         },
@@ -94,16 +97,7 @@ class ImportExcelService(ImportService):
         item_header_list = list(filter(lambda x: (x['required']), header))
         return list(map(lambda x:x['label'], item_header_list))
 
-    def import_excel(self, excel_file,
-                     excel_template: IMPORT_EXCEL_TEMPLATE_ENUM = IMPORT_EXCEL_TEMPLATE_ENUM.MIS_MOSCOW):
-        """
-        запуск импорта excel файла
-        """
-        excel_ds = self.check_file_and_get_ds(excel_file=excel_file, excel_template=excel_template)
-        data_error_list = self.check_data(excel_ds=excel_ds, excel_template=excel_template)
 
-        if data_error_list:
-            raise Exception(f'Не заполенные обязательные поля: {data_error_list}')
 
     def check_data(self, excel_ds, excel_template: IMPORT_EXCEL_TEMPLATE_ENUM):
         """
@@ -128,21 +122,15 @@ class ImportExcelService(ImportService):
 
 
 
-    def check_file_and_get_ds(self, excel_file, excel_template: IMPORT_EXCEL_TEMPLATE_ENUM):
+    def check_structure(self, excel_ds, excel_template: IMPORT_EXCEL_TEMPLATE_ENUM):
         """
-        Проверка, что файл - эксель и его структура соответствует шаблону + вытащить данные в DataSet
+        Проверка, структура соответствует шаблону + вытащить данные в DataSet
         """
-
-        if excel_file.content_type != 'application/vnd.ms-excel' and excel_file.content_type != 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
-            raise Exception(f'Файл не является Excel таблицей')
-
-        excel_ds = pd.read_excel(excel_file,  sheet_name=0)
 
         # получаем шапку excel и проверяем её с настойками полей импорта
         excel_ds_header = list(excel_ds.columns)
 
         excel_template_header = self.get_header(excel_template=excel_template)
-        print(excel_template_header)
 
         # проверка на достаточность полей
         columns_dont_exist = []
@@ -150,10 +138,8 @@ class ImportExcelService(ImportService):
             if not (column_header['label'] in excel_ds_header) and column_header['required']:
                 columns_dont_exist.append(column_header['label'])
 
-        if columns_dont_exist:
-            raise Exception(f'В Excel файле нехватает полей: {columns_dont_exist}')
+        return columns_dont_exist
 
-        return excel_ds.to_dict('records')
 
 
     def revert_import(self):
@@ -163,3 +149,47 @@ class ImportExcelService(ImportService):
 
     def save_log(self):
         pass
+
+
+    def import_excel(self, excel_file, user: User, source:SOURCE_ENUM,
+                     excel_template: IMPORT_EXCEL_TEMPLATE_ENUM = IMPORT_EXCEL_TEMPLATE_ENUM.MIS_MOSCOW, data_set_name = ''):
+        """
+        запуск импорта excel файла
+        """
+        med_data_set = MedDataSet(
+            user=user,
+            name=data_set_name,
+            is_excel=True,
+            source=source,
+            excel_in=excel_file
+        )
+
+        # проверка на формат файла
+        if excel_file.content_type != 'application/vnd.ms-excel' and excel_file.content_type != 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+            med_data_set.import_status=IMPORT_DATA_SET_STATUS_ENUM.ERROR_FILE
+            med_data_set.save()
+            raise Exception(f'Ошибка чтения файла или файл не является Excel')
+
+        # вытаскиваем данные
+        excel_ds = pd.read_excel(excel_file, sheet_name=0)
+
+        # проверяем структуру
+        columns_dont_exist = self.check_structure(excel_ds, excel_template)
+
+        if columns_dont_exist:
+            med_data_set.import_status = IMPORT_DATA_SET_STATUS_ENUM.ERROR_STRUCTURE
+            med_data_set.save()
+            raise Exception(f'В Excel файле нехватает полей: {columns_dont_exist}')
+
+        # меняем структуру представления данных
+        excel_ds = excel_ds.to_dict('records')
+
+
+        data_error_list = self.check_data(excel_ds=excel_ds, excel_template=excel_template)
+
+        if data_error_list:
+            med_data_set.import_status = IMPORT_DATA_SET_STATUS_ENUM.ERROR_REQUIRED
+            med_data_set.count_rows = len(excel_ds)
+            med_data_set.count_error = len(data_error_list)
+            med_data_set.save()
+            raise Exception(f'Не заполнены обязательные поля: {data_error_list}')
