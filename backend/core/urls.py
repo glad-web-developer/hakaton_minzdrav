@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
 from api.api import Login, Logout, CheckUser, UrlImportTemplate, ImportExcel, MedDataSetLvApi, MedDataSetDvApi
 
@@ -10,7 +10,7 @@ urlpatterns = [
 
     path('api/login/', Login.as_view(), ),
     path('api/logout/', Logout.as_view()),
-    path('api/check_user/', CheckUser.as_view()),
+    path('api/check_user/<session_key>/', CheckUser.as_view()),
 
     path('api/url_import_template/<template_name>/', UrlImportTemplate.as_view()),
     path('api/url_import_template/', UrlImportTemplate.as_view()),
@@ -19,6 +19,8 @@ urlpatterns = [
 
     path('api/med_data_set_api/', MedDataSetLvApi.as_view()),
     path('api/med_data_set_api/<id>/', MedDataSetDvApi.as_view()),
+
+    path('api/dashboards/', include('dashboard.urls', namespace='dashboard'))
 
     # path('', TemplateView.as_view(template_name="index.html"))
 ]
