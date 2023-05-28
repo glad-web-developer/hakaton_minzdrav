@@ -1,81 +1,44 @@
 import Api from "@/share/api";
 
-const dashboards = [
-    {
-        id: 1,
-        title: 'Гепатит вариант 1',
-        widgets: [
-            {
-                id: 1,
-                component: 'MorbidityCChartWidget',
-                title: 'График гепатит C',
-                cols: 10,
-                x: 150,
-                y: 150,
-            },
-            {
-                id: 2,
-                component: 'MorbidityBChartWidget',
-                title: 'График гепатит B',
-                cols: 10,
-                x: 0,
-                y: 300,
-            }
-        ]
-    },
-    {
-        id: 2,
-        title: 'Гепатит вариант 2',
-        widgets: [
-            {
-                id: 1,
-                component: 'MorbidityCChartWidget',
-                title: 'График гепатит C',
-                cols: 10,
-                x: 0,
-                y: 0,
-            },
-            {
-                id: 2,
-                component: 'MorbidityBChartWidget',
-                title: 'График гепатит B',
-                cols: 10,
-                x: 400,
-                y: 400,
-            }
-        ]
-    }
-]
 
 export default class DashboardApi extends Api {
 
-    // eslint-disable-next-line no-unused-vars
-    static async createDashboard(dashboard) {
-        // const response = await fetch(`${AuthApi.basePath}/login/`, {
-        //     method: 'POST',
-        //     body: {id: doctorId}
-        // })
-    }
 
-    static async getAllDashboards() {
-        return new Promise(res => {
-            setTimeout(() => {
-                res(dashboards)
-            }, 1500)
-        })
+    static async getAllDashboards(page) {
+        const response = await fetch(`${DashboardApi.basePath}/dashboards/?page=${page}`)
+        return response.json()
     }
 
     static async getDashboardById(id) {
-        return new Promise(res => {
-            setTimeout(() => {
-                res(dashboards.find(dashboard => dashboard.id === id))
-            }, 1500)
+        const response = await fetch(`${DashboardApi.basePath}/dashboards/${id}/`)
+        return response.json()
+    }
+
+    static async createDashboard(title, widgets) {
+        return await fetch(`${DashboardApi.basePath}/dashboards/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                title: title,
+                widgets: widgets,
+            })
         })
     }
 
-    // eslint-disable-next-line no-unused-vars
-    static async saveDashboard(data) {
-        return undefined
+    static async deleteDashboard(id) {
+        return await fetch(`${DashboardApi.basePath}/dashboards/${id}/`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+    }
+
+    static async getAllWidgets() {
+        const response = await fetch(`${DashboardApi.basePath}/dashboards/widgets/`)
+        return response.json()
     }
 
 }

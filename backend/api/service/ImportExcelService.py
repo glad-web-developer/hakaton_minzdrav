@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 
 from api.const import IMPORT_EXCEL_TEMPLATE_ENUM, SOURCE_ENUM, IMPORT_DATA_SET_STATUS_ENUM
-from api.models import MedDataSet
+from api.models import MedDataSet, Mkb10
 from api.service import ImportService
 import pandas as pd
 
@@ -113,6 +113,15 @@ class ImportExcelService(ImportService):
                     if pd.isnull(row_val) or not row_val:
                         error_column_list.append(column_label)
 
+                if column_label =='Код МКБ-10*':
+                    try:
+                        Mkb10.objects.get(code=row_val)
+                    except Mkb10.DoesNotExist:
+                        check_data_error_list.append({
+                            'row': index_row,
+                            'error': f'Неизвестный код МКБ10: "{row_val}"'
+                        })
+
             if error_column_list:
                 check_data_error_list.append({
                     'row':index_row,
@@ -149,6 +158,13 @@ class ImportExcelService(ImportService):
 
     def save_log(self):
         pass
+
+    def check_assignment(self, excel_ds, ):
+        """
+        проверка назначений
+        """
+        pass
+
 
 
     def import_excel(self, excel_file, user: User, source:SOURCE_ENUM,
@@ -192,4 +208,6 @@ class ImportExcelService(ImportService):
             med_data_set.count_rows = len(excel_ds)
             med_data_set.count_error = len(data_error_list)
             med_data_set.save()
-            raise Exception(f'Не заполнены обязательные поля: {data_error_list}')
+            raise Exception(data_error_list)
+
+        self.check_assignment(excel_ds=excel_ds)
