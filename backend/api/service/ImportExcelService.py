@@ -227,7 +227,8 @@ class ImportExcelService(ImportService):
                 doctor_source_fio=  doctor_data['source_fio'],
                 doctor_source_specialization = doctor_data['source_specialization'],
                 assignment_string=row['Назначения*']
-            ).save()
+            )
+            med_data_set_detail.save()
 
             # наполнение базы назначений
             assignment_str = row['Назначения*']
@@ -255,9 +256,9 @@ class ImportExcelService(ImportService):
 
                     assignment_status = self.check_assignment(assignment_variant.assignment, mkb10)
                     AssignmentInDataSet(
-                        med_data_set=med_data_set_detail,
+                        med_data_set_id=med_data_set_detail.id,
                         source_assignment=assignment_name,
-                        assignment=assignment_variant.assignment,
+                        assignment_id=assignment_variant.assignment.id,
                         assignment_status=assignment_status
                     ).save()
 

@@ -1,15 +1,15 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-<<<<<<<<< Temporary merge branch 1
+
 from django.urls import path
 
-from api.api import Login, Logout, CheckUser, UrlImportTemplate, ImportExcel, MedDataSetLvApi
-=========
+from api.api import Login, Logout, CheckUser, UrlImportTemplate, ImportExcel, MedDataSetLvApi, MedDataSetDvApi
+
 from django.urls import path, include
 
 from api.api import Login, Logout, CheckUser, UrlImportTemplate, ImportExcel
->>>>>>>>> Temporary merge branch 2
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -22,13 +22,12 @@ urlpatterns = [
     path('api/url_import_template/', UrlImportTemplate.as_view()),
 
     path('api/import_excel/', ImportExcel.as_view()),
-<<<<<<<<< Temporary merge branch 1
+
 
     path('api/med_data_set_api/', MedDataSetLvApi.as_view()),
     path('api/med_data_set_api/<id>/', MedDataSetDvApi.as_view()),
 
     path('api/dashboards/', include('dashboard.urls', namespace='dashboard'))
->>>>>>>>> Temporary merge branch 2
 
     # path('', TemplateView.as_view(template_name="index.html"))
 ]
