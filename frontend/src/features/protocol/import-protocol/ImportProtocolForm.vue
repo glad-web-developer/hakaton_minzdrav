@@ -5,34 +5,35 @@
       @click-close-button="$emit('click-close-button')"
       @click-rollup-button="$emit('click-rollup-button')"
   >
-    <v-form @submit.prevent="onSubmitForm" ref="form">
+    <v-form
+        @submit.prevent="onSubmitForm"
+        ref="form"
+        v-model="isValidForm"
+        lazy-validation
+    >
+      <v-text-field
+          v-model="title"
+          label="Введите название набора"
+          :rules="titleRules"
+          required
+          clearable
+      >
+        <template v-slot:prepend>
+          <v-icon>
+            mdi-format-text-variant
+          </v-icon>
+        </template>
+      </v-text-field>
+
       <v-file-input
           v-model="file"
-          :rules="[
-              value => !!value || 'Поле обязательное.',
-              value => value.name.endsWith('.xls') || value.name.endsWith('.xlsx') || 'Файл должен быть excel формата',
-              ]"
+          label="Выберите файл"
+          :rules="fileRules"
+          required
           clearable
       />
       <v-btn type="submit">Импортировать</v-btn>
     </v-form>
-
-    <v-snackbar
-        v-model="isShowSnackbar"
-    >
-      {{ message }}
-
-      <template v-slot:action="{ attrs }">
-        <v-btn
-            color="pink"
-            text
-            v-bind="attrs"
-            @click="isShowSnackbar = false"
-        >
-          Закрыть
-        </v-btn>
-      </template>
-    </v-snackbar>
   </contollable-card>
 
 </template>
@@ -46,9 +47,15 @@ export default {
   components: {ContollableCard},
   data() {
     return {
-      isShowSnackbar: false,
-      message: null,
+      isValidForm: true,
 
+      fileRules: [
+        value => !!value || 'Поле обязательное.',
+        value => value?.name.endsWith('.xls') || value?.name.endsWith('.xlsx') || 'Файл должен быть excel формата',
+      ],
+      titleRules: [value => !!value || 'Поле обязательное.'],
+
+      title: null,
       file: null,
     }
   },
@@ -60,22 +67,21 @@ export default {
       setTimeout(() => this.isShowSnackbar = false, 1500)
     },
 
+    validate() {
+      this.isValidForm = this.$refs.form.validate()
+    },
+
     async onSubmitForm() {
 
-      if (!this.file) {
-        this.showSnackbar('Поле файла обязательное')
-        return
+      this.validate()
+
+      if (this.isValidForm) {
+        const response = await ProtocolApi.importProtocol(this.title, this.file)
+
+        if (response.status === 200) {
+          this.$emit('click-close-button')
+        }
       }
-
-      const response = await ProtocolApi.importProtocol(this.file)
-
-      if (response.status === 200) {
-        this.showSnackbar('Файл успешно импортирован')
-      } else {
-        this.showSnackbar('Произошла ошибка при импорте')
-        this.file = null
-      }
-
     },
   }
 
