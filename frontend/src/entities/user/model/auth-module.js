@@ -44,6 +44,7 @@ export default {
 
             if (isSuccess) {
                 commit('authorize')
+                 await router.push({name: 'home'})
             } else {
                 await router.push({name: 'login'})
             }

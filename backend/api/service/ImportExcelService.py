@@ -2,8 +2,10 @@ from datetime import datetime
 
 from django.contrib.auth.models import User
 
-from api.const import IMPORT_EXCEL_TEMPLATE_ENUM, SOURCE_ENUM, IMPORT_DATA_SET_STATUS_ENUM, SEX_ENUM
-from api.models import MedDataSet, Mkb10, Patient, DoctorVariant, Doctor, AssignmentVariant, Assignment
+from api.const import IMPORT_EXCEL_TEMPLATE_ENUM, SOURCE_ENUM, IMPORT_DATA_SET_STATUS_ENUM, SEX_ENUM, \
+    ASSIGNMENT_STATUS_ENUM, IMPORT_DATA_SET_DETAIL_STATUS_ENUM
+from api.models import MedDataSet, Mkb10, Patient, DoctorVariant, Doctor, AssignmentVariant, Assignment, \
+    MedDataSetDetail, AssignmentInDataSet
 from api.service import ImportService
 import pandas as pd
 
@@ -137,8 +139,10 @@ class ImportExcelService(ImportService):
     def save_log(self):
         pass
 
-    def update_data_moscow_mis(self, excel_ds, source: SOURCE_ENUM):
+    def update_data_moscow_mis(self, excel_ds, source: SOURCE_ENUM, med_data_set):
+        row_num = 0
         for row in excel_ds:
+            row_num += 1
             # добавляем пациента
             patient_data = {}
             patient_data['polis'] = row['Номер полиса пациента*']
@@ -199,6 +203,32 @@ class ImportExcelService(ImportService):
                 doctor_variant.doctor = doctor
                 doctor_variant.save()
 
+            try:
+                mkb10 = Mkb10.objects.get(code=row['Код МКБ-10*'])
+            except Exception:
+                continue
+
+            try:
+                date_service = datetime.strptime(row['Дата оказания услуги*'], "%d.%m.%Y").date()
+            except Exception:
+                date_service = None
+
+            med_data_set_detail = MedDataSetDetail(
+                med_data_set=med_data_set,
+                row_num = row_num,
+                import_status = IMPORT_DATA_SET_DETAIL_STATUS_ENUM.SUCCESS,
+                patient_sex=patient_data['sex'],
+                patient_date_birth=patient_data['date_birth'],
+                patient_source_fio=patient_data['fio'],
+                mkb10_id=mkb10.id,
+                source_appointment_id=row['ID приема*'],
+                date_service=date_service,
+                doctor_source_id =doctor_data['source_id'],
+                doctor_source_fio=  doctor_data['source_fio'],
+                doctor_source_specialization = doctor_data['source_specialization'],
+                assignment_string=row['Назначения*']
+            ).save()
+
             # наполнение базы назначений
             assignment_str = row['Назначения*']
             assignment_str = assignment_str.replace(';', '\n')
@@ -214,23 +244,38 @@ class ImportExcelService(ImportService):
                         }
                     )
                     if not assignment_variant.assignment:
-                        assignment = Assignment.objects.create(
-                            name=assignment_name
+                        assignment, is_created = Assignment.objects.get_or_create(
+                            name=assignment_name,
+                            defaults={
+                                'name':assignment_name
+                            }
                         )
                         assignment_variant.assignment = assignment
                         assignment_variant.save()
 
+                    assignment_status = self.check_assignment(assignment_variant.assignment, mkb10)
+                    AssignmentInDataSet(
+                        med_data_set=med_data_set_detail,
+                        source_assignment=assignment_name,
+                        assignment=assignment_variant.assignment,
+                        assignment_status=assignment_status
+                    ).save()
 
 
-
-
-
-    def check_assignment(self, excel_ds, source: SOURCE_ENUM, excel_template: IMPORT_EXCEL_TEMPLATE_ENUM):
+    def check_assignment(self, assignment, mkb10 ):
         """
         проверка назначений и заполнения справочных таблиц
         """
-        if excel_template == IMPORT_EXCEL_TEMPLATE_ENUM.MIS_MOSCOW:
-            return self.check_moscow_mis(excel_ds, source)
+
+        recomendation_qs = mkb10.recomendationassignment_set.all()
+        if not recomendation_qs:
+            return ASSIGNMENT_STATUS_ENUM.NOT_DATA
+
+        if recomendation_qs.filter(assignment__name__icontains=assignment):
+            return ASSIGNMENT_STATUS_ENUM.ACCEPTABLE
+
+        return ASSIGNMENT_STATUS_ENUM.INVALID_ACCEPTABLE
+
 
     def import_excel(self, excel_file, user: User, source: SOURCE_ENUM,
                      excel_template: IMPORT_EXCEL_TEMPLATE_ENUM = IMPORT_EXCEL_TEMPLATE_ENUM.MIS_MOSCOW,
@@ -275,11 +320,12 @@ class ImportExcelService(ImportService):
             med_data_set.save()
             raise Exception(data_error_list)
 
-        if excel_template == IMPORT_EXCEL_TEMPLATE_ENUM.MIS_MOSCOW:
-            self.update_data_moscow_mis(excel_ds=excel_ds, source=source)
-
-        # self.check_assignment(excel_ds=excel_ds, source=source, excel_template=excel_template)
-
         med_data_set.import_status = IMPORT_DATA_SET_STATUS_ENUM.SUCCESS
+        med_data_set.save()
+
+        if excel_template == IMPORT_EXCEL_TEMPLATE_ENUM.MIS_MOSCOW:
+            self.update_data_moscow_mis(excel_ds=excel_ds, source=source, med_data_set=med_data_set)
+
+
         med_data_set.save()
         return med_data_set

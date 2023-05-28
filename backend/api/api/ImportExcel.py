@@ -17,7 +17,8 @@ class ImportExcel(APIView):
         if excel_file:
             import_excel_service = ImportExcelService()
 
-            import_excel_service.import_excel(excel_file, user=user, data_set_name=data_set_name, source=source)
+            # todo убрать. Использовал для дебага ошибок
+            # import_excel_service.import_excel(excel_file, user=user, data_set_name=data_set_name, source=source)
 
             try:
                 med_data_set = import_excel_service.import_excel(excel_file, user=user, data_set_name=data_set_name, source=source)
