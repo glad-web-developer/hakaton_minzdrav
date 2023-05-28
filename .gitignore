@@ -24,3 +24,4 @@ back/*.sqlite3
 back/apps/import_scripts/csv/tablizi_iz_staroi_is/*.csv
 dont_git
 backend/files/media
+front
