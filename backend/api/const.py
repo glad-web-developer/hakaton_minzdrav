@@ -34,6 +34,7 @@ class SEX_ENUM(models.IntegerChoices):
 class ASSIGNMENT_STATUS_ENUM(models.IntegerChoices):
     ACCEPTABLE = 1, 'Допустимое назначение'
     INVALID_ACCEPTABLE = 2, 'Недопустимое назначение'
+    NOT_DATA = 3,  'У МКБ10 нет рекомендаций'
 
 
 class IMPORT_EXCEL_TEMPLATE_ENUM(models.TextChoices):

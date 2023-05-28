@@ -20,7 +20,7 @@ class MedDataSetDetail(models.Model):
     source_appointment_id = models.CharField('ID приёма во внешней системе', max_length=255)
     patient_source_fio = models.CharField('ФИО пациента во внешней системе', null=True, blank=True, max_length=255)
     patient_source_id = models.CharField('ID пациента во внешней системе', max_length=255)
-    mkb10 = models.ForeignKey(Mkb10, verbose_name='Диагноз МКБ 10', on_delete=models.PROTECT)
+    mkb10 = models.ForeignKey(Mkb10, verbose_name='Диагноз МКБ 10', on_delete=models.PROTECT, null=True, blank=True)
     date_service = models.DateField(verbose_name='Дата услуги',)
     doctor_source_id = models.CharField('ID доктора во внешней системе', max_length=255)
     doctor_source_fio = models.CharField('ФИО доктора во внешней системе', max_length=255, null=True, blank=True)
