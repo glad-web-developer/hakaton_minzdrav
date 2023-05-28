@@ -1,3 +1,6 @@
+from .DoctorVariantInline import DoctorVariantInline
+from .PatientVariantInline import PatientVariantInline
+from .RecomendationAssignmentInline import RecomendationAssignmentInline
 from .MedUserAdmin import MedUserAdmin
 from .MedOrganizationAdmin import MedOrganizationAdmin
 from .Mkb10Admin import Mkb10Admin
@@ -7,4 +10,3 @@ from .AssignmentAdmin import AssignmentAdmin
 from .AssignmentInDataSetAdmin import AssignmentInDataSetAdmin
 from .DoctorAdmin import DoctorAdmin
 from .PatientAdmin import PatientAdmin
-from .RecomendationAssignmentAdmin import RecomendationAssignmentAdmin

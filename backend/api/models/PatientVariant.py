@@ -18,10 +18,10 @@ class PatientVariant(models.Model):
     source_id = models.CharField('id во внешней системе', max_length=255)
     source_sex = models.IntegerField('Пол', choices=SEX_ENUM.choices, null=True, blank=True)
     source_date_birth = models.DateField('Дата рождения', null=True, blank=True)
-    source_snils = models.DateField('СНИЛС', null=True, blank=True)
-    source_passport = models.DateField('Серия и номер паспорта', null=True, blank=True)
-    source_polis = models.DateField('Номер полиса', null=True, blank=True)
-    source_phone = models.DateField('Телефон', null=True, blank=True, max_length=255)
+    source_snils = models.CharField('СНИЛС', max_length=255, null=True, blank=True)
+    source_passport = models.CharField('Серия и номер паспорта', max_length=255, null=True, blank=True)
+    source_polis = models.CharField('Номер полиса', max_length=255, null=True, blank=True)
+    source_phone = models.CharField('Телефон', max_length=255, null=True, blank=True)
 
     def __str__(self):
         return self.source_fio
