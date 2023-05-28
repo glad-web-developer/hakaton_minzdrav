@@ -36,19 +36,19 @@
             <v-list-item-title>Показать полную информацию</v-list-item-title>
           </v-list-item>
 
-          <v-list-item @click="onClickShowOtherSpecialistProtocols">
-            <v-list-item-icon>
-              <v-icon>mdi-file-table-box-multiple-outline</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>Показать другие протоколы других специалистов</v-list-item-title>
-          </v-list-item>
+          <!--          <v-list-item @click="onClickShowOtherSpecialistProtocols">-->
+          <!--            <v-list-item-icon>-->
+          <!--              <v-icon>mdi-file-table-box-multiple-outline</v-icon>-->
+          <!--            </v-list-item-icon>-->
+          <!--            <v-list-item-title>Показать другие протоколы других специалистов</v-list-item-title>-->
+          <!--          </v-list-item>-->
 
-          <v-list-item @click="onClickShowErrorsProtocol">
-            <v-list-item-icon>
-              <v-icon>mdi-alert-remove-outline</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>Показать ошибки протокола</v-list-item-title>
-          </v-list-item>
+          <!--          <v-list-item @click="onClickShowErrorsProtocol">-->
+          <!--            <v-list-item-icon>-->
+          <!--              <v-icon>mdi-alert-remove-outline</v-icon>-->
+          <!--            </v-list-item-icon>-->
+          <!--            <v-list-item-title>Показать ошибки протокола</v-list-item-title>-->
+          <!--          </v-list-item>-->
         </v-list>
       </v-menu>
 
@@ -93,50 +93,44 @@
             </template>
 
             <v-list-item link>
-              <v-list-item-title>PDF</v-list-item-title>
-            </v-list-item>
-
-            <v-list-item link>
-              <v-list-item-title>Word</v-list-item-title>
-            </v-list-item>
-
-            <v-list-item link>
-              <v-list-item-title>Excel</v-list-item-title>
+              <v-list-item-title>
+                <a :href="`${backend}${$store.state.protocol.packExcelSrc}`" download>Excel</a>
+              </v-list-item-title>
             </v-list-item>
           </v-list-group>
         </v-list>
       </v-menu>
 
-      <v-menu offset-y>
-        <template v-slot:activator="{ attrs, on }">
-          <v-btn
-              class="text-white"
-              text
-              link
-              v-bind="attrs"
-              v-on="on"
-          >
-            Рецепт
-          </v-btn>
-        </template>
+<!--      <v-menu offset-y>-->
+<!--        <template v-slot:activator="{ attrs, on }">-->
+<!--          <v-btn-->
+<!--              class="text-white"-->
+<!--              text-->
+<!--              link-->
+<!--              v-bind="attrs"-->
+<!--              v-on="on"-->
+<!--          >-->
+<!--            Рецепт-->
+<!--          </v-btn>-->
+<!--        </template>-->
 
-        <v-list>
+<!--        <v-list>-->
 
-          <v-list-item @click="onClickCreateRecipe107">
-            <v-list-item-icon>
-              <v-icon>mdi-card-account-details-outline</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>Форма 107</v-list-item-title>
-          </v-list-item>
+<!--          <v-list-item @click="onClickCreateRecipe107">-->
+<!--            <v-list-item-icon>-->
+<!--              <v-icon>mdi-card-account-details-outline</v-icon>-->
+<!--            </v-list-item-icon>-->
+<!--            <v-list-item-title>Форма 107</v-list-item-title>-->
+<!--          </v-list-item>-->
 
-          <v-list-item @click="onClickCreateRecipe148">
-            <v-list-item-icon>
-              <v-icon>mdi-card-account-details-outline</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>Форма 148</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
+<!--          <v-list-item @click="onClickCreateRecipe148">-->
+<!--            <v-list-item-icon>-->
+<!--              <v-icon>mdi-card-account-details-outline</v-icon>-->
+<!--            </v-list-item-icon>-->
+<!--            <v-list-item-title>Форма 148</v-list-item-title>-->
+<!--          </v-list-item>-->
+<!--        </v-list>-->
+<!--      </v-menu>-->
 
       <v-menu offset-y>
         <template v-slot:activator="{ attrs, on }">
@@ -171,45 +165,58 @@
         </v-list>
       </v-menu>
 
-      <v-menu offset-y>
-        <template v-slot:activator="{ attrs, on }">
-          <v-btn
-              class="text-white"
-              text
-              link
-              v-bind="attrs"
-              v-on="on"
-          >
-            Отчетность
-          </v-btn>
-        </template>
-        <v-list>
+<!--      <v-menu offset-y>-->
+<!--        <template v-slot:activator="{ attrs, on }">-->
+<!--          <v-btn-->
+<!--              class="text-white"-->
+<!--              text-->
+<!--              link-->
+<!--              v-bind="attrs"-->
+<!--              v-on="on"-->
+<!--          >-->
+<!--            Отчетность-->
+<!--          </v-btn>-->
+<!--        </template>-->
+<!--        <v-list>-->
 
-          <v-list-item @click="onClickCreateReportTemplate">
-            <v-list-item-icon>
-              <v-icon>mdi-pencil-outline</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>Создать шаблон отчета</v-list-item-title>
-          </v-list-item>
+<!--          <v-list-item @click="onClickCreateReportTemplate">-->
+<!--            <v-list-item-icon>-->
+<!--              <v-icon>mdi-pencil-outline</v-icon>-->
+<!--            </v-list-item-icon>-->
+<!--            <v-list-item-title>Создать шаблон отчета</v-list-item-title>-->
+<!--          </v-list-item>-->
 
-          <v-list-item @click="onClickCreateReport">
-            <v-list-item-icon>
-              <v-icon>mdi-open-in-new</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>Сформировать отчет по шаблону</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
+<!--          <v-list-item @click="onClickCreateReport">-->
+<!--            <v-list-item-icon>-->
+<!--              <v-icon>mdi-open-in-new</v-icon>-->
+<!--            </v-list-item-icon>-->
+<!--            <v-list-item-title>Сформировать отчет по шаблону</v-list-item-title>-->
+<!--          </v-list-item>-->
+<!--        </v-list>-->
+<!--      </v-menu>-->
 
     </v-btn-toggle>
+    <div class="ml-auto">
+      <a :href="`${origin}/admin/`" class="text-decoration-none">
+        <v-btn
+            class="text-white"
+            text
+            link
+        >
+          Админ панель
+        </v-btn>
+      </a>
 
-    <logout-button class="ml-auto"/>
+      <logout-button class="ml-auto"/>
+
+    </div>
   </v-app-bar>
 </template>
 
 <script>
 import Vue from "vue";
 import {LogoutButton} from "@/features/auth";
+import BaseApi from '@/share/api'
 
 export const navigationBus = new Vue()
 
@@ -220,6 +227,8 @@ export default {
     return {
       isShowFileMenu: false,
       value: 1,
+      backend: BaseApi.basePath,
+      origin: BaseApi.origin,
     }
   },
   methods: {

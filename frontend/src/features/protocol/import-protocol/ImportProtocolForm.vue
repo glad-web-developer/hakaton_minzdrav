@@ -32,8 +32,14 @@
           required
           clearable
       />
-      <v-btn type="submit">Импортировать</v-btn>
+      <div class="d-flex gap-2 align-center justify-content-between">
+        <v-btn type="submit">Импортировать</v-btn>
+        <a :href="`${origin}/media/import-export.xlsx`" download="">Ссылка на корректный файл</a>
+      </div>
     </v-form>
+    <v-snackbar v-model="isShowSnackbar">
+      {{ message }}
+    </v-snackbar>
   </contollable-card>
 
 </template>
@@ -57,6 +63,10 @@ export default {
 
       title: null,
       file: null,
+
+      isShowSnackbar: false,
+      message: null,
+      origin: ProtocolApi.origin
     }
   },
 
@@ -79,7 +89,12 @@ export default {
         const response = await ProtocolApi.importProtocol(this.title, this.file)
 
         if (response.status === 200) {
+          this.showSnackbar('Файл успешно импортирован')
           this.$emit('click-close-button')
+        } else {
+          this.showSnackbar('Произошла ошибка')
+          this.title = null
+          this.file = null
         }
       }
     },

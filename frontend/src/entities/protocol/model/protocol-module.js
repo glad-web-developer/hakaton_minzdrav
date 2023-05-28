@@ -4,44 +4,8 @@ export default {
     state: () => ({
         currentProtocolId: 1,
         isLoading: false,
-        protocols: [
-            {
-                id: 1,
-                innerNumber: '788/566',
-                patientId: 1,
-                dateOfAppearance: '10.07.1484',
-                doctorId: 1,
-                diagnosis: {
-                    id: 1,
-                    code: 'MT-784',
-                    title: 'Заболевание такое то'
-                },
-            },
-            {
-                id: 2,
-                innerNumber: '788/586',
-                patientId: 1,
-                dateOfAppearance: '10.08.1484',
-                doctorId: 1,
-                diagnosis: {
-                    id: 1,
-                    code: 'MT-784',
-                    title: 'Заболевание такое то'
-                },
-            },
-            {
-                id: 3,
-                innerNumber: '788/466',
-                patientId: 1,
-                dateOfAppearance: '10.09.1484',
-                doctorId: 1,
-                diagnosis: {
-                    id: 1,
-                    code: 'MT-784',
-                    title: 'Заболевание такое то'
-                },
-            }
-        ]
+        protocols: [],
+        packExcelSrc: null,
     }),
     mutations: {
         changeCurrentProtocol(state, payload) {
@@ -52,6 +16,12 @@ export default {
         },
         removeProtocol(state, payload) {
             state.protocols = state.protocols.filter(protocol => protocol.id !== payload.protocolId)
+        },
+        setProtocolPacks(state, payload) {
+            state.protocols = payload
+        },
+        setPackExcelSrc(state, payload) {
+            state.packExcelSrc = payload
         }
     },
     actions: {
@@ -67,12 +37,21 @@ export default {
             } else {
                 commit('changeCurrentProtocol', {id: protocol.id})
             }
+        },
+        async changePackProtocol({commit}, payload) {
+            const response = await ProtocolApi.getPackProtocol(payload)
+            commit('setProtocolPacks', response.data.items)
+            commit('changeCurrentProtocol', {id: response.data.items.at(0)?.id ?? -1})
+            commit('setPackExcelSrc', response.data.excelIn)
         }
     },
     getters: {
         getCurrentProtocol(state) {
             return state.protocols.find(protocol => protocol.id === state.currentProtocolId)
         },
+        isEmptyProtocols(state) {
+            return state.protocols.length === 0
+        }
     }
 }
 

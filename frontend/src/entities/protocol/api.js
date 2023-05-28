@@ -41,18 +41,6 @@ const protocols = [
 
 export default class ProtocolApi extends Api {
 
-    static async getAllProtocolsByPatientId(patientId) {
-        // const response = await fetch(`${AuthApi.basePath}/login/`, {
-        //     method: 'POST',
-        //     body: {id: doctorId}
-        // })
-
-        return await new Promise((res) => {
-            setTimeout(() => {
-                res(protocols.filter(protocol => protocol.patientId === patientId))
-            }, 1000)
-        })
-    }
 
     static async getProtocolById(protocolId) {
         return await new Promise((res) => {
@@ -62,9 +50,14 @@ export default class ProtocolApi extends Api {
         })
     }
 
-    static async createProtocol(body) {
-        console.log(body)
+    static async getAllPackProtocols(page = 1) {
+        return (await fetch(`${ProtocolApi.basePath}/med_data_set_api/?page=${page}&limit=11`)).json()
     }
+
+    static async getPackProtocol(id) {
+        return (await fetch(`${ProtocolApi.basePath}/med_data_set_api/${id}/`)).json()
+    }
+
 
     static async importProtocol(name, file) {
         const formData = new FormData()
