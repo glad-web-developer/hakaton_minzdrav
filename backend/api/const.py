@@ -19,6 +19,7 @@ class IMPORT_DATA_SET_STATUS_ENUM(models.IntegerChoices):
     ERROR_FILE = 3, 'Ошибка чтения файла'
     ERROR_STRUCTURE = 4, 'Ошибка структуры файла или запроса'
     ERROR_ACCESS = 5, 'Ошибка прав доступа'
+    ERROR_REQUIRED = 6, 'Ошибка заполнения обязательных полей'
 
 
 class IMPORT_DATA_SET_DETAIL_STATUS_ENUM(models.IntegerChoices):
