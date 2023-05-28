@@ -1,0 +1,70 @@
+{% extends "admin/base_site.html" %}
+{% block extrahead %}
+    <style>
+        body {
+            --body-quiet-color: #000;
+            --darkened-bg: #fff;
+            --body-fg: #212121;
+        }
+
+        .app-list {
+            column-count: 1 !important;
+        }
+
+        .object-tools a:link, .object-tools a:visited {
+            background: #fff;
+            color: #000;
+            box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 12%), 0 1px 5px 0 rgb(0 0 0 / 20%);
+            border-radius: 7px;
+            font-size: 12px;
+        }
+
+        .object-tools a:hover {
+            background: #212121;
+            color: #fff;
+        }
+
+        .object-tools li {
+            display: block;
+            text-align: center;
+            margin-right: 10px;
+            height: auto;
+            margin-left: 0;
+        }
+
+        .object-tools {
+            float: none !important;
+        }
+
+        .btn-floating i {
+            color: #0f0f0f;
+            width: auto;
+        }
+
+        .btn-floating:hover i {
+            color: #fff;
+        }
+
+        #content {
+            padding: 40px !important;
+            display: block;
+        }
+
+        tr.selected th a, tr.selected td a {
+            color: #fff;
+        }
+
+        .form-row, .submit-row {
+            border: none;
+        }
+
+        [type=checkbox]:checked + span:not(.lever):before {
+            border-right: 2px solid #fff;
+            border-bottom: 2px solid #fff;
+        }
+
+        fieldset.module, .submit-row {
+            box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 12%), 0 1px 5px 0 rgb(0 0 0 / 20%);
+        }
+    </style>
+{% endblock %}
