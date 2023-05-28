@@ -9,12 +9,12 @@ class Patient(models.Model):
         verbose_name_plural = 'Пациенты'
         db_table = 'patient'
 
-    fio = models.CharField('ФИО', max_length=255,)
+    fio = models.CharField('ФИО', max_length=255,null=True, blank=True)
     sex = models.IntegerField('Пол', choices=SEX_ENUM.choices, null=True, blank=True)
-    date_birth = models.DateField('Дата рождения', null=True, blank=True)
-    snils = models.DateField('СНИЛС', null=True, blank=True)
-    passport = models.DateField('Серия и номер паспорта', null=True, blank=True)
-    polis = models.DateField('Номер полиса', null=True, blank=True)
+    date_birth = models.CharField('Дата рождения', null=True, blank=True, max_length=255)
+    snils = models.CharField('СНИЛС', null=True, blank=True, max_length=255)
+    passport = models.CharField('Серия и номер паспорта', null=True, blank=True, max_length=255)
+    polis = models.CharField('Номер полиса', null=True, blank=True, max_length=255)
     phone = models.CharField('Телефон', null=True, blank=True, max_length=255)
 
     def __str__(self):
