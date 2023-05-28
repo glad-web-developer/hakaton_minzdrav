@@ -1,5 +1,9 @@
 <template>
+  <v-overlay v-if="isLoading">
+    <v-progress-circular indeterminate/>
+  </v-overlay>
   <contollable-card
+      v-else
       title="Открыть файл"
       class="root"
       @click-close-button="$emit('click-close-button')"
@@ -13,17 +17,18 @@
         clearable
         clear-icon="mdi-close-circle-outline"
     ></v-text-field>
+
     <v-treeview
         class="treeview"
         dense
         v-model="tree"
         :search="search"
         :filter="filter"
-        :open="initiallyOpen"
         :items="items"
         activatable
-        item-key="name"
+        item-key="id"
         open-on-click
+        return-object
     >
       <template v-slot:prepend="{ item, open }">
         <v-icon v-if="!item.file">
@@ -35,20 +40,25 @@
         </v-icon>
       </template>
     </v-treeview>
+    <v-pagination
+        v-if="pages > 1"
+        v-model="page"
+        :length="pages"
+        circle
+    ></v-pagination>
   </contollable-card>
 </template>
 
 <script>
 import ContollableCard from "@/share/ui/ContollableCard";
+import ProtocolApi from "@/entities/protocol/api";
 
 export default {
   name: "OpenProtocolForm",
   components: {ContollableCard},
   data: () => ({
     search: '',
-    initiallyOpen: ['public'],
     files: {
-      html: 'mdi-language-html5',
       js: 'mdi-nodejs',
       json: 'mdi-code-json',
       md: 'mdi-language-markdown',
@@ -58,72 +68,11 @@ export default {
       xls: 'mdi-file-excel',
     },
     tree: [],
-    items: [
-      {
-        name: '.git',
-      },
-      {
-        name: 'node_modules',
-      },
-      {
-        name: 'public',
-        children: [
-          {
-            name: 'static',
-            children: [
-              {
-                name: 'logo.png',
-                file: 'png',
-              },
-              {
-                name: 'logo1.png',
-                file: 'png',
-              },
-              {
-                name: 'logo2.png',
-                file: 'png',
-              },
-              {
-                name: 'logo3.png',
-                file: 'png',
-              },
-            ],
-          },
-          {
-            name: 'favicon.ico',
-            file: 'png',
-          },
-          {
-            name: 'index.html',
-            file: 'html',
-          },
-        ],
-      },
-      {
-        name: '.gitignore',
-        file: 'txt',
-      },
-      {
-        name: 'babel.config.js',
-        file: 'js',
-      },
-      {
-        name: 'package.json',
-        file: 'json',
-      },
-      {
-        name: 'README.md',
-        file: 'md',
-      },
-      {
-        name: 'vue.config.js',
-        file: 'js',
-      },
-      {
-        name: 'yarn.lock',
-        file: 'txt',
-      },
-    ],
+    items: [],
+
+    isLoading: true,
+    pages: null,
+    page: 1,
   }),
   computed: {
     filter() {
@@ -132,6 +81,22 @@ export default {
           : undefined
     },
   },
+  methods: {
+    async fetchPacks() {
+      const response = await ProtocolApi.getAllPackProtocols(this.page)
+      this.items = response.data
+      this.pages = response.pageCount
+      this.isLoading = false
+    }
+  },
+  watch: {
+    page() {
+      this.fetchPacks()
+    }
+  },
+  mounted() {
+    this.fetchPacks()
+  }
 }
 </script>
 

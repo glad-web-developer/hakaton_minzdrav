@@ -67,6 +67,10 @@ export default {
             } else {
                 commit('changeCurrentProtocol', {id: protocol.id})
             }
+        },
+        async changePackProtocol({commit, state}, payload) {
+            const response = await ProtocolApi.getPackProtocol(payload.id)
+
         }
     },
     getters: {
