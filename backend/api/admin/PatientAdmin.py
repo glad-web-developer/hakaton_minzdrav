@@ -12,6 +12,10 @@ class PatientAdmin(ImportExportModelAdmin):
         'fio',
         'sex',
         'date_birth',
+        'snils',
+        'passport',
+        'polis',
+        'phone',
     ]
 
     search_fields = [
@@ -19,12 +23,20 @@ class PatientAdmin(ImportExportModelAdmin):
         'fio',
         'sex',
         'date_birth',
+        'snils',
+        'passport',
+        'polis',
+        'phone',
     ]
     list_display_links = [
         'id',
         'fio',
         'sex',
         'date_birth',
+        'snils',
+        'passport',
+        'polis',
+        'phone',
     ]
     list_filter = [
         'sex',

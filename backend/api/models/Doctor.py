@@ -9,7 +9,7 @@ class Doctor(models.Model):
         verbose_name_plural = 'Доктора/врачи'
         db_table = 'doctor'
 
-    fio = models.CharField('ФИО во внешней системе', max_length=255, )
+    fio = models.CharField('ФИО', max_length=255, )
     # id может быть UUID строка и int
     specialization = models.CharField('Специализация', max_length=255, null=True, blank=True)
 

@@ -1,12 +1,16 @@
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 
+from api.admin import RecomendationAssignmentInline
 from api.models import Assignment
 
 
 @admin.register(Assignment)
 class AssignmentAdmin(ImportExportModelAdmin):
-    icon_name = 'assignment'
+    icon_name = 'healing'
+    inlines = [
+        RecomendationAssignmentInline
+    ]
     list_display = [
         'id',
         'name',

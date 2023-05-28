@@ -17,11 +17,11 @@ class ImportExcel(APIView):
         if excel_file:
             import_excel_service = ImportExcelService()
 
-            # import_excel_service.import_excel(excel_file, user=user, data_set_name=data_set_name, source=source)
+            import_excel_service.import_excel(excel_file, user=user, data_set_name=data_set_name, source=source)
 
             try:
-                import_excel_service.import_excel(excel_file, user=user, data_set_name=data_set_name, source=source)
-                return Response({'message':'Импорт прошёл успешно'})
+                med_data_set = import_excel_service.import_excel(excel_file, user=user, data_set_name=data_set_name, source=source)
+                return Response({'message':'Импорт прошёл успешно', 'detail':{'id':med_data_set.id}})
             except Exception as e:
                 return Response({'message':str(e)}, status=status.HTTP_400_BAD_REQUEST)
 

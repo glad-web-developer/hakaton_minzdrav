@@ -7,3 +7,6 @@ class Assignment(models.Model):
         db_table = 'assignment'
 
     name = models.CharField('Название', max_length=255, unique=True)
+
+    def __str__(self):
+        return self.name

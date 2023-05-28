@@ -12,3 +12,6 @@ class RecomendationAssignment(models.Model):
     assignment = models.ForeignKey(Assignment,verbose_name='Назначение', on_delete=models.CASCADE)
     # +
     mkb10 = models.ForeignKey(Mkb10, verbose_name='МКБ10', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.assignment.name
