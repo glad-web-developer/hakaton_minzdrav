@@ -9,3 +9,4 @@ from .AssignmentAdmin import AssignmentAdmin
 from .AssignmentInDataSetAdmin import AssignmentInDataSetAdmin
 from .DoctorAdmin import DoctorAdmin
 from .PatientAdmin import PatientAdmin
+from .RecomendationAssignmentAdmin import RecomendationAssignmentAdmin

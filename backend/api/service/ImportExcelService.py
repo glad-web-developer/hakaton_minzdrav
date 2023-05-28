@@ -214,8 +214,11 @@ class ImportExcelService(ImportService):
                         }
                     )
                     if not assignment_variant.assignment:
-                        assignment = Assignment.objects.create(
-                            name=assignment_name
+                        assignment, is_created = Assignment.objects.get_or_create(
+                            name=assignment_name,
+                            defaults={
+                                'name':assignment_name
+                            }
                         )
                         assignment_variant.assignment = assignment
                         assignment_variant.save()

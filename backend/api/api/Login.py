@@ -1,5 +1,6 @@
 
 from django.contrib.auth import authenticate, login
+from django.middleware.csrf import get_token
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -20,7 +21,8 @@ class Login(APIView):
 
             if user is not None:
                 login(request, user)
-                return Response({'sessionid':request.session.session_key}, status=status.HTTP_200_OK)
+                csrf = get_token(request)
+                return Response({'sessionid':request.session.session_key, 'csrf':csrf}, status=status.HTTP_200_OK)
 
             return Response('Ошибка авторизации. Неверный логин/пароль', status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

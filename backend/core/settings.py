@@ -124,6 +124,9 @@ REST_FRAMEWORK = {
         'djangorestframework_camel_case.render.CamelCaseJSONRenderer',
         'djangorestframework_camel_case.render.CamelCaseBrowsableAPIRenderer',
     ),
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication'
+    ],
     'JSON_UNDERSCOREIZE': {
         'no_underscore_before_number': True,
     },
@@ -179,3 +182,10 @@ CORS_ORIGIN_WHITELIST = [
     'http://127.0.0.1',
     'http://127.0.0.1:8000',
 ]
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:8080',
+    'http://127.0.0.1',
+    'http://127.0.0.1:8000',
+]
+
