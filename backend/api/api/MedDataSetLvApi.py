@@ -15,7 +15,6 @@ class MedDataSetLvApi(APIView):
 
     def get(self, request):
         med_data_set = MedDataSet.objects.all()
-
         page = int(request.GET.get('page', 1))
         limit = int(request.GET.get('limit', 25))
 

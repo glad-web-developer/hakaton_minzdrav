@@ -1,11 +1,10 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path, include
-
-from api.api import Login, Logout, CheckUser, UrlImportTemplate, ImportExcel, MedDataSetLvApi
+from django.urls import include
 from django.urls import path
 
+from api.api import Login, Logout, CheckUser, UrlImportTemplate, ImportExcel, MedDataSetLvApi
 
 urlpatterns = [
     path('admin/', admin.site.urls),
