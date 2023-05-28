@@ -223,17 +223,19 @@ class ImportExcelService(ImportService):
                         assignment_variant.assignment = assignment
                         assignment_variant.save()
 
+                    self.check_assignment(assignment_variant.assignment, row['Код МКБ-10*'])
 
-
-
-
-
-    def check_assignment(self, excel_ds, source: SOURCE_ENUM, excel_template: IMPORT_EXCEL_TEMPLATE_ENUM):
+    def check_assignment(self, assignment, mkb10_code ):
         """
         проверка назначений и заполнения справочных таблиц
         """
-        if excel_template == IMPORT_EXCEL_TEMPLATE_ENUM.MIS_MOSCOW:
-            return self.check_moscow_mis(excel_ds, source)
+        try:
+            mkb10 = Mkb10.objects.get(code=mkb10_code)
+        except Exception:
+            return False
+
+        recomendation_qs = mkb10.recomendationassignment_set.all()
+
 
     def import_excel(self, excel_file, user: User, source: SOURCE_ENUM,
                      excel_template: IMPORT_EXCEL_TEMPLATE_ENUM = IMPORT_EXCEL_TEMPLATE_ENUM.MIS_MOSCOW,
@@ -280,8 +282,6 @@ class ImportExcelService(ImportService):
 
         if excel_template == IMPORT_EXCEL_TEMPLATE_ENUM.MIS_MOSCOW:
             self.update_data_moscow_mis(excel_ds=excel_ds, source=source)
-
-        # self.check_assignment(excel_ds=excel_ds, source=source, excel_template=excel_template)
 
         med_data_set.import_status = IMPORT_DATA_SET_STATUS_ENUM.SUCCESS
         med_data_set.save()
