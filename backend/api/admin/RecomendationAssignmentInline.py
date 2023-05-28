@@ -6,4 +6,4 @@ from api.models import RecomendationAssignment
 class RecomendationAssignmentInline(admin.TabularInline):
     model = RecomendationAssignment
     extra = 0
-    autocomplete_fields = ['mkb10']
+    autocomplete_fields = ['mkb10', 'assignment']
