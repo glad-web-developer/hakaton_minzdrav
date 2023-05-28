@@ -13,7 +13,7 @@ class Patient(models.Model):
     sex = models.IntegerField('Пол', choices=SEX_ENUM.choices, null=True, blank=True)
     date_birth = models.DateField('Дата рождения', null=True, blank=True)
     snils = models.CharField('СНИЛС', null=True, blank=True, max_length=255)
-    passport = models.CharField('Серия и номер паспорта', null=True, blank=True, max_length=255)
+    passport = models.CharField('Паспорт', null=True, blank=True, max_length=255)
     polis = models.CharField('Номер полиса', null=True, blank=True, max_length=255)
     phone = models.CharField('Телефон', null=True, blank=True, max_length=255)
 

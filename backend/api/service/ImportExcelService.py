@@ -1,7 +1,9 @@
+from datetime import datetime
+
 from django.contrib.auth.models import User
 
 from api.const import IMPORT_EXCEL_TEMPLATE_ENUM, SOURCE_ENUM, IMPORT_DATA_SET_STATUS_ENUM, SEX_ENUM
-from api.models import MedDataSet, Mkb10, Patient, DoctorVariant, Doctor
+from api.models import MedDataSet, Mkb10, Patient, DoctorVariant, Doctor, AssignmentVariant, Assignment
 from api.service import ImportService
 import pandas as pd
 
@@ -141,25 +143,25 @@ class ImportExcelService(ImportService):
             patient_data = {}
             patient_data['polis'] = row['Номер полиса пациента*']
 
-            if row['ФИО пациента']:
+            if not pd.isnull(row['ФИО пациента']) and row['ФИО пациента']:
                 patient_data['fio'] = row['ФИО пациента']
 
-            if row['Пол пациента']:
+            if not pd.isnull(row['Пол пациента']) and row['Пол пациента']:
                 if row['Пол пациента'] == 'Муж':
                     patient_data['sex'] = SEX_ENUM.MALE
                 if row['Пол пациента'] == 'Жен':
                     patient_data['sex'] = SEX_ENUM.FEMALE
 
-            if row['Дата рождения пациента']:
+            if not pd.isnull(row['Дата рождения пациента']) and row['Дата рождения пациента']:
                 try:
-                    patient_data['date_birth'] = row['Дата рождения пациента']
+                    patient_data['date_birth'] = datetime.strptime(row['Дата рождения пациента'], "%d.%m.%Y").date()
                 except Exception:
-                    pass
+                    patient_data['date_birth'] = None
 
-            if row['СНИЛС пациента']:
+            if not pd.isnull(row['СНИЛС пациента']) and row['СНИЛС пациента']:
                 patient_data['snils'] = row['СНИЛС пациента']
 
-            if row['Телефон пациента']:
+            if  not pd.isnull(row['Телефон пациента']) and row['Телефон пациента']:
                 patient_data['phone'] = row['Телефон пациента']
 
             patient, is_created = Patient.objects.update_or_create(
@@ -174,13 +176,13 @@ class ImportExcelService(ImportService):
                 'source_specialization':None,
             }
 
-            if row['ФИО врача']:
+            if  not pd.isnull(row['ФИО врача']) and row['ФИО врача']:
                 doctor_data['source_fio'] = row['ФИО врача']
 
-            if row['ID врача*']:
+            if not pd.isnull(row['ID врача*']) and row['ID врача*']:
                 doctor_data['source_id'] = row['ID врача*']
 
-            if row['Должность']:
+            if not pd.isnull(row['Должность']) and row['Должность']:
                 doctor_data['source_specialization'] = row['Должность']
 
             doctor_variant, is_created = DoctorVariant.objects.get_or_create(
@@ -196,6 +198,27 @@ class ImportExcelService(ImportService):
                 )
                 doctor_variant.doctor = doctor
                 doctor_variant.save()
+
+            # наполнение базы назначений
+            assignment_str = row['Назначения*']
+            assignment_str = assignment_str.replace(';', '\n')
+            assignment_list = assignment_str.split('\n')
+            for assignment_name in assignment_list:
+                if assignment_name:
+                    assignment_variant, is_created = AssignmentVariant.objects.get_or_create(
+                        name=assignment_name,
+                        source=SOURCE_ENUM.MSK_MIS,
+                        defaults={
+                            'name':assignment_name,
+                            'source':SOURCE_ENUM.MSK_MIS
+                        }
+                    )
+                    if not assignment_variant.assignment:
+                        assignment = Assignment.objects.create(
+                            name=assignment_name
+                        )
+                        assignment_variant.assignment = assignment
+                        assignment_variant.save()
 
 
 
