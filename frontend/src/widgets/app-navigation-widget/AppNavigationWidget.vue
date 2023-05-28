@@ -1,5 +1,6 @@
 <template>
   <v-app-bar dense class="bg" app>
+    <img width="32" height="32" src="/logo.svg"/>
     <v-btn-toggle background-color="transparent" tile group>
       <v-btn v-if="$route.name !== 'home'" @click="$router.push({name: 'home'})" link text class="text-white">Протокол
       </v-btn>
@@ -23,28 +24,28 @@
         <v-list>
           <v-list-item @click="onClickShowShortProtocol">
             <v-list-item-icon>
-              <v-icon>mdi-home</v-icon>
+              <v-icon>mdi-information-variant</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Показать краткую информацию</v-list-item-title>
           </v-list-item>
 
           <v-list-item @click="onClickShowDetailProtocol">
             <v-list-item-icon>
-              <v-icon>mdi-home</v-icon>
+              <v-icon>mdi-information-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Показать полную информацию</v-list-item-title>
           </v-list-item>
 
           <v-list-item @click="onClickShowOtherSpecialistProtocols">
             <v-list-item-icon>
-              <v-icon>mdi-home</v-icon>
+              <v-icon>mdi-file-table-box-multiple-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Показать другие протоколы других специалистов</v-list-item-title>
           </v-list-item>
 
           <v-list-item @click="onClickShowErrorsProtocol">
             <v-list-item-icon>
-              <v-icon>mdi-home</v-icon>
+              <v-icon>mdi-alert-remove-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Показать ошибки протокола</v-list-item-title>
           </v-list-item>
@@ -53,8 +54,8 @@
 
       <v-menu
           offset-y
+          v-model='isShowFileMenu'
           :close-on-content-click="false"
-          :value='isShowFileMenu'
       >
 
         <template v-slot:activator="{ attrs, on }">
@@ -70,22 +71,21 @@
         </template>
 
         <v-list>
-
-          <v-list-item @click="onClickCreateFile">
-            <v-list-item-icon>
-              <v-icon>mdi-home</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>Создать</v-list-item-title>
-          </v-list-item>
-
           <v-list-item @click="onClickOpenFile">
             <v-list-item-icon>
-              <v-icon>mdi-home</v-icon>
+              <v-icon>mdi-open-in-new</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Открыть</v-list-item-title>
           </v-list-item>
 
-          <v-list-group prepend-icon="mdi-account-circle">
+          <v-list-item @click="onClickImportProtocol">
+            <v-list-item-icon>
+              <v-icon>mdi-import</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Импортировать</v-list-item-title>
+          </v-list-item>
+
+          <v-list-group prepend-icon="mdi-export-variant">
             <template v-slot:activator>
               <v-list-item-content>
                 <v-list-item-title>Экспортировать как:</v-list-item-title>
@@ -124,14 +124,14 @@
 
           <v-list-item @click="onClickCreateRecipe107">
             <v-list-item-icon>
-              <v-icon>mdi-home</v-icon>
+              <v-icon>mdi-card-account-details-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Форма 107</v-list-item-title>
           </v-list-item>
 
           <v-list-item @click="onClickCreateRecipe148">
             <v-list-item-icon>
-              <v-icon>mdi-home</v-icon>
+              <v-icon>mdi-card-account-details-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Форма 148</v-list-item-title>
           </v-list-item>
@@ -156,17 +156,17 @@
           <router-link :to="{name: 'dashboard-constructor'}" class="text-decoration-none">
             <v-list-item>
               <v-list-item-icon>
-                <v-icon>mdi-home</v-icon>
+                <v-icon>mdi-pencil-outline</v-icon>
               </v-list-item-icon>
-              <v-list-item-title>Создать</v-list-item-title>
+              <v-list-item-title>Создать доску</v-list-item-title>
             </v-list-item>
           </router-link>
 
           <v-list-item @click="onClickShowSelectDashboard">
             <v-list-item-icon>
-              <v-icon>mdi-home</v-icon>
+              <v-icon>mdi-open-in-new</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>Открыть</v-list-item-title>
+            <v-list-item-title>Открыть доску</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -183,19 +183,18 @@
             Отчетность
           </v-btn>
         </template>
-
         <v-list>
 
           <v-list-item @click="onClickCreateReportTemplate">
             <v-list-item-icon>
-              <v-icon>mdi-home</v-icon>
+              <v-icon>mdi-pencil-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Создать шаблон отчета</v-list-item-title>
           </v-list-item>
 
           <v-list-item @click="onClickCreateReport">
             <v-list-item-icon>
-              <v-icon>mdi-home</v-icon>
+              <v-icon>mdi-open-in-new</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Сформировать отчет по шаблону</v-list-item-title>
           </v-list-item>
@@ -203,16 +202,20 @@
       </v-menu>
 
     </v-btn-toggle>
+
+    <logout-button class="ml-auto"/>
   </v-app-bar>
 </template>
 
 <script>
 import Vue from "vue";
+import {LogoutButton} from "@/features/auth";
 
 export const navigationBus = new Vue()
 
 export default {
   name: "AppNavigationWidget",
+  components: {LogoutButton},
   data() {
     return {
       isShowFileMenu: false,
@@ -254,6 +257,10 @@ export default {
     },
     onClickCreateReport() {
       navigationBus.$emit('click-create-report')
+    },
+    onClickImportProtocol() {
+      this.isShowFileMenu = false
+      navigationBus.$emit('click-import-protocol')
     }
   }
 }

@@ -19,6 +19,11 @@ export default {
 
         resetAuthError(state) {
             state.isAuthError = false
+        },
+
+        deauthorize(state) {
+            state.isAuthenticated = false
+            state.isAuthError = false
         }
     },
     actions: {
@@ -42,6 +47,12 @@ export default {
             } else {
                 await router.push({name: 'login'})
             }
+        },
+
+        async logout({commit}) {
+            await AuthApi.logout()
+            commit('deauthorize')
+            await router.push({name: 'login'})
         }
     },
     getters: {}

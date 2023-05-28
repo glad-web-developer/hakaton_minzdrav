@@ -9,35 +9,17 @@ const TemplateType = [{
 const AggregateFunctionType = {
     'SUM': {
         id: 1, title: 'Сумма'
-    }, 'AVG': {
+    },
+    'AVG': {
         id: 2, title: 'Среднее арифметическое'
     },
 }
 
-const templates = [{
-    id: 1,
-    type: TemplateType.TableExcel,
-    title: 'Отчет по больничным работников',
-    fields: [{field: 'id', aggregateFunction: null}, {
-        field: 'first_name',
-        aggregateFunction: null
-    }, {field: 'last_name', aggregateFunction: null}, {
-        field: 'count_ill_day',
-        aggregateFunction: AggregateFunctionType.SUM
-    },]
-}, {
-    id: 2,
-    type: TemplateType.TableExcel,
-    title: 'Отчет еще какой то',
-    table_id: 1,
-    fields: [{field: 'id', aggregateFunction: null}, {
-        field: 'first_name',
-        aggregateFunction: null
-    }, {field: 'last_name', aggregateFunction: null}, {
-        field: 'count_ill_day',
-        aggregateFunction: AggregateFunctionType.SUM
-    },],
-},]
+const templates = [
+    {id: 1, title: 'Отчет А', src: './file_abosus.png'},
+    {id: 2, title: 'Отчет B', src: './file_abosus.png'},
+    {id: 3, title: 'Отчет C', src: './file_abosus.png'},
+]
 
 const tables = [{
     id: 1, title: 'Доктора', fields: [{
@@ -62,11 +44,6 @@ const tables = [{
 }]
 
 export default class ReportApi extends Api {
-    // const response = await fetch(`${AuthApi.basePath}/login/`, {
-    //     method: 'POST',
-    //     body: {id: doctorId}
-    // })
-
 
     static async getAllTables() {
         return await new Promise((res) => {

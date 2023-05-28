@@ -18,14 +18,21 @@
 
 <script>
 import {AppNavigationWidget, navigationBus} from "@/widgets";
-import {CreateProtocolForm, OpenProtocolForm} from "@/features/protocol"
+import {CreateProtocolForm, ImportProtocolForm, OpenProtocolForm} from "@/features/protocol"
 import {CreateRecipe107, CreateRecipe148} from "@/features/recipe";
 import {SelectDashboardForm} from "@/features/dashboard";
-import {CreateReportTemplate} from '@/features/report'
+import {CreateReportTemplate, SelectReportForm} from '@/features/report'
 
 export default {
   name: 'MainLayout',
-  components: {OpenProtocolForm, AppNavigationWidget, CreateRecipe107, CreateRecipe148, CreateReportTemplate},
+  components: {
+    OpenProtocolForm,
+    AppNavigationWidget,
+    CreateRecipe107,
+    CreateRecipe148,
+    CreateReportTemplate,
+    SelectReportForm
+  },
   data() {
     return {
       overlay: false,
@@ -59,6 +66,14 @@ export default {
     onClickCreateReportTemplate() {
       this.overlayComponent = CreateReportTemplate
       this.overlay = true
+    },
+    onClickImportProtocol() {
+      this.overlayComponent = ImportProtocolForm
+      this.overlay = true
+    },
+    onClickCreateReport() {
+      this.overlayComponent = SelectReportForm
+      this.overlay = true
     }
   },
   mounted() {
@@ -68,6 +83,8 @@ export default {
     navigationBus.$on('click-create-recipe-148', this.onClickCreateRecipe148)
     navigationBus.$on('click-show-select-dashboard', this.onClickShowSelectDashboard)
     navigationBus.$on('click-create-report-template', this.onClickCreateReportTemplate)
+    navigationBus.$on('click-import-protocol', this.onClickImportProtocol)
+    navigationBus.$on('click-create-report', this.onClickCreateReport)
   }
 }
 </script>

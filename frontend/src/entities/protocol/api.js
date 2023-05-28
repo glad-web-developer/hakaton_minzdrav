@@ -65,4 +65,14 @@ export default class ProtocolApi extends Api {
     static async createProtocol(body) {
         console.log(body)
     }
+
+    static async importProtocol(file) {
+        const formData = new FormData()
+        formData.set('excel', file)
+
+        return await fetch(`${ProtocolApi.basePath}/import_excel/`, {
+            method: 'POST',
+            body: formData
+        })
+    }
 }
