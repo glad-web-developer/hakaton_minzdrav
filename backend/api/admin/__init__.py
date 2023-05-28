@@ -1,5 +1,4 @@
 from .DoctorVariantInline import DoctorVariantInline
-from .PatientVariantInline import PatientVariantInline
 from .RecomendationAssignmentInline import RecomendationAssignmentInline
 from .MedUserAdmin import MedUserAdmin
 from .MedOrganizationAdmin import MedOrganizationAdmin
