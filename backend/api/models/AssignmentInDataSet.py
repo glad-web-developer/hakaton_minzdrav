@@ -1,6 +1,6 @@
 from django.db import models
 
-from api.const import SOURCE_ENUM, ASSIGNMENT_STATUS_ENUM
+from api.const import ASSIGNMENT_STATUS_ENUM
 from api.models import MedDataSetDetail, Assignment
 
 

@@ -1,0 +1,22 @@
+<svg width="640" height="480" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <!-- Created with SVG-edit - https://github.com/SVG-Edit/svgedit-->
+ <defs>
+  <linearGradient gradientUnits="userSpaceOnUse" id="svg_3" x1="12.175" x2="87.825" y1="87.775" y2="12.125">
+   <stop id="svg_5" offset="0.05" stop-color="#48aaeb"/>
+   <stop id="svg_4" offset="0.95" stop-color="#1268a1"/>
+  </linearGradient>
+  <symbol height="200px" id="svg_6" preserveAspectRatio="xMidYMid meet" viewBox="4.76837158203125e-7 -0.000001430511474609375 300 38.07579040527344" width="200px                                                                                                                                        " xmlns="http://www.w3.org/2000/svg">
+
+   <g id="svg_1" transform="scale(0.5497198699192861)">
+    <g class="sYCdZE4Zo" fill="url(#svg_3)" id="svg_2" transform="translate(-11.162758256274769, -11.071260237780713) scale(0.9149801849405547)">
+     <path d="m19.4,63.1l5.1,0l0,5.2c0,4 3.2,7.2 7.2,7.2l5.1,0l0,5.1c0,4 3.2,7.2 7.2,7.2l36.6,0c4,0 7.2,-3.2 7.2,-7.2l0,-36.6c0,-4 -3.2,-7.2 -7.2,-7.2l-5.2,0l0,-5.2c0,-4 -3.2,-7.2 -7.2,-7.2l-5.2,0l0,-5.1c0,-4 -3.2,-7.2 -7.2,-7.2l-36.4,0c-4,0 -7.2,3.2 -7.2,7.2l0,36.7c0,3.9 3.2,7.1 7.2,7.1zm42.7,-26.2l-18.1,0c-4,0 -7.2,3.2 -7.2,7.2l0,18.1l-11.3,0l0,-30.5c0,-3.4 2.8,-6.2 6.2,-6.2l30.4,0l0,11.4zm-24.2,26.2l18.1,0c4,0 7.2,-3.2 7.2,-7.2l0,-18l11.3,0l0,30.4c0,3.4 -2.8,6.2 -6.2,6.2l-30.4,0l0,-11.4z"/>
+    </g>
+   </g>
+  </symbol>
+ </defs>
+ <g class="layer">
+  <title>Layer 1</title>
+  <use id="svg_7" transform="matrix(14.3566, 0, 0, 14.3566, 22.4549, -1210.27)" x="4.947267" xlink:href="#svg_6" y="1.285804"/>
+  <g id="svg_8"/>
+ </g>
+</svg>

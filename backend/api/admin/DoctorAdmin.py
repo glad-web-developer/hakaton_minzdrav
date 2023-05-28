@@ -1,12 +1,16 @@
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 
+from api.admin import DoctorVariantInline
 from api.models import Doctor
 
 
 @admin.register(Doctor)
 class DoctorAdmin(ImportExportModelAdmin):
     icon_name = 'recent_actors'
+    inlines = [
+        DoctorVariantInline,
+    ]
     list_display = [
         'id',
         'fio',

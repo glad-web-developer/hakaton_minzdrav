@@ -150,14 +150,14 @@ SESSION_COOKIE_AGE = 259200000
 SESSION_COOKIE_HTTPONLY = False
 
 MATERIAL_ADMIN_SITE = {
-    'HEADER': ('Информационный помощник работника медицинской организации'),  # Admin site header
-    'TITLE': ('Информационный помощник работника медицинской организации'),  # Admin site title
-    'FAVICON': 'path/to/favicon',  # Admin site favicon (path to static should be specified)
+    'HEADER': ('МИС Гудвин'),  # Admin site header
+    'TITLE': ('Медицинская информационная система Гудвин'),  # Admin site title
+    'FAVICON': 'logo_big.svg',  # Admin site favicon (path to static should be specified)
     'MAIN_BG_COLOR': '',  # Admin site main color, css color should be specified
     'MAIN_HOVER_COLOR': '',  # Admin site main hover color, css color should be specified
-    'PROFILE_PICTURE': '',  # Admin site profile picture (path to static should be specified)
+    'PROFILE_PICTURE': 'logo_big.svg',  # Admin site profile picture (path to static should be specified)
     'PROFILE_BG': 'back3.jpg',  # Admin site profile background (path to static should be specified)
-    'LOGIN_LOGO': '',  # Admin site logo on login page (path to static should be specified)
+    'LOGIN_LOGO': 'logo_big.svg',  # Admin site logo on login page (path to static should be specified)
     'LOGOUT_BG': 'back3.jpg',  # Admin site background on login/logout pages (path to static should be specified)
     'SHOW_THEMES': False,  # Show default admin themes button
     'TRAY_REVERSE': False,  # Hide object-tools and additional-submit-line by default
