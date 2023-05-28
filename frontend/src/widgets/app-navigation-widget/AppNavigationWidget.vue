@@ -93,15 +93,9 @@
             </template>
 
             <v-list-item link>
-              <v-list-item-title>PDF</v-list-item-title>
-            </v-list-item>
-
-            <v-list-item link>
-              <v-list-item-title>Word</v-list-item-title>
-            </v-list-item>
-
-            <v-list-item link>
-              <v-list-item-title>Excel</v-list-item-title>
+              <v-list-item-title>
+                <a :href="`${backend}${$store.state.protocol.packExcelSrc}`" download>Excel</a>
+              </v-list-item-title>
             </v-list-item>
           </v-list-group>
         </v-list>
@@ -210,6 +204,7 @@
 <script>
 import Vue from "vue";
 import {LogoutButton} from "@/features/auth";
+import BaseApi from '@/share/api'
 
 export const navigationBus = new Vue()
 
@@ -220,6 +215,7 @@ export default {
     return {
       isShowFileMenu: false,
       value: 1,
+      backend: BaseApi.basePath
     }
   },
   methods: {

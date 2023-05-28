@@ -7,7 +7,7 @@
         :key="protocol.id"
         :dark="protocol.id === $store.state.protocol.currentProtocolId"
     >
-      {{ protocol.innerNumber }}
+      {{ protocol.id }}
     </v-btn>
   </div>
 </template>

@@ -1,24 +1,21 @@
 <template>
-  
+
   <contollable-card
       title="Информация о протоколе"
       @click-close-button="$emit('close')"
   >
     <v-container class="d-flex flex-column gap-2">
       <v-row>
-        Дата: {{ $store.getters.getCurrentProtocol.dateOfAppearance }}
+        Дата составления: {{ $store.getters.getCurrentProtocol.dateService }}
       </v-row>
       <v-row>
-        Наличие ЭЛН: Есть
+        ФИО пациента: {{ $store.getters.getCurrentProtocol.patientSourceFio }}
       </v-row>
       <v-row>
-        Наличие рецепта: Есть
+        Дата рождения: {{ $store.getters.getCurrentProtocol.patientDateBirth }}
       </v-row>
       <v-row>
-        Наличие ЭЦП: Есть
-      </v-row>
-      <v-row>
-        Наличие повторной явки: Есть
+        Пол: {{ $store.getters.getCurrentProtocol.patientSex === 1 ? 'Мужской' : 'Женский' }}
       </v-row>
     </v-container>
   </contollable-card>

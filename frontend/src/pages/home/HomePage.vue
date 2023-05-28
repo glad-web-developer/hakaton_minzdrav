@@ -1,6 +1,7 @@
 <template>
   <v-container class="mw-100 d-flex flex-column">
-    <v-row class="flex-grow-0">
+    <div v-if="$store.getters.isEmptyProtocols">Нет доступных протоколов данном наборе</div>
+    <v-row v-else class="flex-grow-0">
       <v-col v-if="isShowShortInfoProtocol" cols="3">
         <short-protocol-info-widget @close="isShowShortInfoProtocol = false"/>
       </v-col>
@@ -53,10 +54,10 @@ export default {
     return {
       protocols: [],
       currentProtocolId: 1,
-      isShowShortInfoProtocol: true,
-      isShowDetailInfoProtocol: true,
-      isShowOtherSpecialistProtocols: true,
-      isShowErrorsProtocolInfo: true,
+      isShowShortInfoProtocol: false,
+      isShowDetailInfoProtocol: false,
+      isShowOtherSpecialistProtocols: false,
+      isShowErrorsProtocolInfo: false,
     }
   },
   mounted() {

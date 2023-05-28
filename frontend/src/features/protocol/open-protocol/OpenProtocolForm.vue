@@ -34,10 +34,15 @@
         <v-icon v-if="!item.file">
           {{ open ? 'mdi-folder-open' : 'mdi-folder' }}
         </v-icon>
+      </template>
 
-        <v-icon v-else>
-          {{ files[item.file] }}
-        </v-icon>
+      <template v-slot:label="{item}">
+        <div class="d-flex justify-content-between align-center"
+             @click="$store.dispatch('changePackProtocol', item.id)">
+          <span>{{ item.name }}</span>
+          <span>{{ getStatus(item.importStatus) }}</span>
+          <span>{{ item.dateCreate }}</span>
+        </div>
       </template>
     </v-treeview>
     <v-pagination
@@ -58,15 +63,6 @@ export default {
   components: {ContollableCard},
   data: () => ({
     search: '',
-    files: {
-      js: 'mdi-nodejs',
-      json: 'mdi-code-json',
-      md: 'mdi-language-markdown',
-      pdf: 'mdi-file-pdf',
-      png: 'mdi-file-image',
-      txt: 'mdi-file-document-outline',
-      xls: 'mdi-file-excel',
-    },
     tree: [],
     items: [],
 
@@ -87,6 +83,18 @@ export default {
       this.items = response.data
       this.pages = response.pageCount
       this.isLoading = false
+    },
+    getStatus(status) {
+      const statuses = [
+        '',
+        'Успешный импорт',
+        'Не все записи импортированы',
+        'Ошибка чтения файла',
+        'Ошибка структуры файла или запроса',
+        'Ошибка прав доступа'
+      ]
+
+      return statuses[status]
     }
   },
   watch: {
