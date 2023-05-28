@@ -1,12 +1,14 @@
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 
+from api.admin.MedDatasetDetailInline import MedDataSetDetailInline
 from api.models import MedDataSet
 
 
 @admin.register(MedDataSet)
 class MedDataSetAdmin(ImportExportModelAdmin):
     icon_name = 'local_library'
+    inlines = [MedDataSetDetailInline,]
     list_display = [
         'id',
         'name',
