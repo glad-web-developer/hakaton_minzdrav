@@ -2,7 +2,13 @@
   <v-container fluid class="mw-100 pt-0">
     <v-row class="h-100">
       <v-col class="h-100" ref="content">
+
+        <v-overlay v-if="isLoading">
+          <v-progress-circular indeterminate/>
+        </v-overlay>
+
         <vue-draggable-resizable
+            v-else
             class="border-0 cursor-pointer"
             w="auto"
             h="auto"
@@ -27,8 +33,14 @@
       </v-col>
 
       <v-navigation-drawer absolute v-model="isShowWidgetsList" right temporary>
-        <v-text-field :value="dashboardTitle" placeholder="Введите название"/>
-        <v-btn tile block @click="onClickSaveDashboard">Сохранить</v-btn>
+        <v-form v-model="isValidForm" ref="form" @submit.prevent="onSubmit">
+          <v-text-field
+              v-model="dashboardTitle"
+              placeholder="Введите название"
+              :rules="[value => !!value || 'Обязательное поле.']"
+          />
+          <v-btn tile block type="submit">Сохранить</v-btn>
+        </v-form>
         <v-list two-line flat>
           <v-list-item-group
               v-model="activeWidgets"
@@ -59,6 +71,12 @@
         <v-icon>mdi-arrow-left</v-icon>
       </v-btn>
     </v-row>
+    <v-snackbar
+        v-model="isShowSnackbar"
+    >
+      {{ message }}
+    </v-snackbar>
+
   </v-container>
 
 </template>
@@ -73,42 +91,25 @@ export default {
   components: {MorbidityCChartWidget, MorbidityBChartWidget, ContollableCard, TestChar},
   data() {
     return {
-      widgets: [
-        {
-          id: 1,
-          component: 'MorbidityCChartWidget',
-          title: 'График гепатит C',
-          cols: 10,
-          x: 0,
-          y: 0,
-        },
-        {
-          id: 2,
-          component: 'MorbidityBChartWidget',
-          title: 'График гепатит B',
-          cols: 10,
-          x: 0,
-          y: 0,
-        },
-        {
-          id: 3,
-          component: 'TestChar',
-          title: 'График гепатит A',
-          cols: 10,
-          x: 0,
-          y: 0,
-        }
-      ],
-      activeWidgets: [],
+      widgets: [],
       isShowWidgetsList: false,
-      dashboardTitle: "",
-      grid: null
+      grid: null,
+
+      dashboardTitle: null,
+      activeWidgets: [],
+
+
+      isValidForm: true,
+      isLoading: true,
+      isShowSnackbar: false,
+      message: null
     }
   },
   methods: {
     onCloseWidget(widgetId) {
       this.activeWidgets = this.activeWidgets.filter(widget => widget.id !== widgetId)
     },
+
     onDragging(x, y, widgetId) {
       this.activeWidgets.forEach(widget => {
         if (widget.id === widgetId) {
@@ -117,24 +118,69 @@ export default {
         }
       })
     },
+
     onClickShowWidgetsList() {
       this.isShowWidgetsList = true
     },
-    onClickSaveDashboard() {
-      DashboardApi.saveDashboard({
-        title: this.dashboardTitle,
-        widgets: this.activeWidgets
-      })
+
+    onSubmit() {
+      this.validateForm()
+      this.createDashboard()
     },
+
+    validateForm() {
+      this.isValidForm = this.$refs.form.validate()
+    },
+    setWidgetRequirementProperties(widget) {
+      if (!widget.x) {
+        widget.x = 0
+      }
+
+      if (!widget.y) {
+        widget.y = 0
+      }
+
+      return widget
+    },
+    showMessage(message) {
+      this.message = message
+      this.isShowSnackbar = true
+      setTimeout(() => this.isShowSnackbar = false, 1500)
+    },
+
+    async fetchWidgets() {
+      this.widgets = await DashboardApi.getAllWidgets()
+      this.isLoading = false
+    },
+
+    async createDashboard() {
+      if (this.isValidForm) {
+        const response = await DashboardApi.createDashboard(
+            this.dashboardTitle,
+            this.activeWidgets.map(this.setWidgetRequirementProperties)
+        )
+
+        if (response.status === 201) {
+          this.showMessage('Доска успешно создана')
+        } else {
+          this.showMessage('Произошла ошибка')
+        }
+      }
+    },
+
+    calculateGrid() {
+      const pl = parseInt(window.getComputedStyle(this.$refs.content, null).paddingLeft.split('px')[0], 10)
+      const pr = parseInt(window.getComputedStyle(this.$refs.content, null).paddingRight.split('px')[0], 10)
+      const width = this.$refs.content.getBoundingClientRect().width
+
+      const innerWidth = width - pl - pr
+
+      this.grid = innerWidth / 32
+    }
   },
   mounted() {
-    const pl = parseInt(window.getComputedStyle(this.$refs.content, null).paddingLeft.split('px')[0], 10)
-    const pr = parseInt(window.getComputedStyle(this.$refs.content, null).paddingRight.split('px')[0], 10)
-    const width = this.$refs.content.getBoundingClientRect().width
-
-    const innerWidth = width - pl - pr
-
-    this.grid = innerWidth / 32
+    this.calculateGrid()
+    this.fetchWidgets()
   }
 }
 </script>
