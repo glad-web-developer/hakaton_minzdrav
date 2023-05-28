@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.urls import include
 from django.urls import path
 
-from api.api import Login, Logout, CheckUser, UrlImportTemplate, ImportExcel, MedDataSetLvApi
+from api.api import Login, Logout, CheckUser, UrlImportTemplate, ImportExcel, MedDataSetLvApi, MedDataSetDvApi
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -19,8 +19,9 @@ urlpatterns = [
     path('api/import_excel/', ImportExcel.as_view()),
 
     path('api/med_data_set_api/', MedDataSetLvApi.as_view()),
-    path('api/dashboards/', include('dashboard.urls', namespace='dashboard'))
+    path('api/med_data_set_api/<id>/', MedDataSetDvApi.as_view()),
 
+    path('api/dashboards/', include('dashboard.urls', namespace='dashboard'))
     # path('', TemplateView.as_view(template_name="index.html"))
 ]
 
