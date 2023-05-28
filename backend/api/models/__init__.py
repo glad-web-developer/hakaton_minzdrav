@@ -1,7 +1,6 @@
 from .Mkb10 import Mkb10
 from .Assignment import Assignment
 from .Patient import Patient
-from .PatientVariant import PatientVariant
 from .Doctor import Doctor
 from .DoctorVariant import DoctorVariant
 

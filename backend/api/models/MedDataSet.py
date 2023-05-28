@@ -10,16 +10,16 @@ class MedDataSet(models.Model):
         verbose_name_plural = 'Наборы мед. назначений'
         db_table = 'med_data_set'
 
-    user = models.ForeignKey(User, verbose_name='Пользователь кто импортировал', on_delete=models.PROTECT,)
+    user = models.ForeignKey(User, verbose_name='Пользователь кто импортировал', on_delete=models.PROTECT, null=True, blank=True)
     name = models.CharField('Название набора', null=True, blank=True, max_length=255)
     date_create = models.DateTimeField('Дата импорта', auto_now_add=True)
     is_excel = models.BooleanField('Импорт был через Эксель', default=False)
-    is_archive = models.BooleanField('Набор отправлен в архив', default=False, help_text='не будет учитываться в наборе')
+    is_archive = models.BooleanField('Набор отправлен в архив', default=False, )
     source = models.IntegerField('Источник данных', choices=SOURCE_ENUM.choices)
     import_status = models.IntegerField('Статус импорта', choices=IMPORT_DATA_SET_STATUS_ENUM.choices)
 
-    excel_in = models.FileField('excel на входе', null=True, blank=True, help_text='если импорт был не через API')
-    excel_out = models.FileField('excel с ошибками на выходе', null=True, blank=True, help_text='если импорт был с ошибкой')
+    excel_in = models.FileField('excel на входе', null=True, blank=True, )
+    excel_out = models.FileField('excel с ошибками на выходе', null=True, blank=True, )
 
     count_rows = models.IntegerField('Количество строк данных', null=True, blank=True)
     count_error = models.IntegerField('Количество ошибочных строк', null=True, blank=True)
